@@ -1,0 +1,72 @@
+{
+  "name": "@ncodefactory/morph-cli",
+  "description": "command-line interface for morph dvelopment env",
+  "version": "1.1.1",
+  "private": false,
+  "license": "MIT",
+  "author": {
+    "name": "Bartosz Solarski",
+    "email": "bartosz.solarski@hotmail.com"
+  },
+  "repository": {
+    "type": "git",
+    "url": "ncodefactory/morph-cli"
+  },
+  "bin": {
+    "mo": "./dist/index.js"
+  },
+  "scripts": {
+    "compile": "babel src --out-dir .compiled --source-maps",
+    "compile:watch": "babel src --out-dir .compiled --source-maps --watch",
+    "start": "node --require @babel/register src/app.js",
+    "test": "mocha --reporter mochawesome --reporter-options reportDir=test-results src/**/*spec.js --require @babel/register --recursive",
+    "test:watch": "npm run test -- --watch",
+    "prepare": "shx rm -rf dist && cross-env NODE_ENV=production babel src --out-dir dist --ignore '**/*.spec.js' --ignore 'src/app.js' && cp -r --force assets/templates/ dist/templates",
+    "add": "npm run prepare && npm install -g",
+    "remove": "npm remove -g"
+  },
+  "babel": {
+    "presets": [
+      [
+        "@babel/preset-env",
+        {
+          "targets": {
+            "node": "current"
+          }
+        }
+      ]
+    ],
+    "plugins": [
+      "@babel/plugin-proposal-object-rest-spread"
+    ]
+  },
+  "devDependencies": {
+    "@babel/cli": "^7.0.0",
+    "@babel/core": "^7.0.0",
+    "@babel/plugin-proposal-object-rest-spread": "^7.0.0",
+    "@babel/preset-env": "^7.0.0",
+    "@babel/register": "^7.0.0",
+    "babel-eslint": "^10.0.1",
+    "chai": "^4.2.0",
+    "cross-env": "^5.2.0",
+    "eslint": "^5.8.0",
+    "eslint-config-airbnb": "^17.1.0",
+    "eslint-plugin-import": "^2.14.0",
+    "eslint-plugin-jsx-a11y": "^6.1.2",
+    "eslint-plugin-react": "^7.11.1",
+    "mocha": "^5.2.0",
+    "mochawesome": "^3.1.0",
+    "prettier-eslint": "^8.8.2",
+    "shx": "^0.3.2"
+  },
+  "dependencies": {
+    "chalk": "^2.4.2",
+    "clear": "^0.1.0",
+    "commander": "^2.19.0",
+    "figlet": "^1.2.1",
+    "inquirer": "^6.2.2",
+    "recursive-readdir": "^2.2.2",
+    "tar": "^4.4.8",
+    "tmp": "0.0.33"
+  }
+}

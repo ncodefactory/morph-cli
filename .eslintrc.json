@@ -1,0 +1,20 @@
+{
+  "extends": "airbnb",
+  "env": {
+    "mocha": true,
+    "es6": true,
+    "node": true
+  },
+  "parser": "babel-eslint",
+  "rules": {
+    "linebreak-style": ["error", "unix"],
+    "no-const-assign": "warn",
+    "no-this-before-super": "warn",
+    "no-undef": "warn",
+    "no-unreachable": "warn",
+    "no-unused-vars": "warn",
+    "constructor-super": "warn",
+    "prefer-template": 0,
+    "quotes": [2, "single"]
+  }
+}
