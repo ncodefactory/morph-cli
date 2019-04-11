@@ -35,15 +35,6 @@ const run = async () => {
         console.log(`error: ${error.message}`); // eslint-disable-line no-console
       }
     })
-    .command('info')
-    .description('shows an information banner')
-    .action(() => {
-      try {
-        init(false);
-      } catch (error) {
-        console.log(`error: ${error.message}`); // eslint-disable-line no-console
-      }
-    })
     .on('--help', () => {
       console.log(''); // eslint-disable-line no-console
       console.log('available project types:'); // eslint-disable-line no-console
@@ -52,6 +43,16 @@ const run = async () => {
       supportedProjectTypes.forEach((value) => {
         console.log(`${value.name} - ${value.desc}`); // eslint-disable-line no-console
       });
+    });
+
+  program.command('info')
+    .description('shows an information banner')
+    .action(() => {
+      try {
+        init(false);
+      } catch (error) {
+        console.log(`error: ${error.message}`); // eslint-disable-line no-console
+      }
     });
 
   program.parse(process.argv);
