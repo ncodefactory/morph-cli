@@ -8,7 +8,7 @@ import newHandler, { supportedProjectTypes } from './new-handler';
 const moduleName = name.split('/')[1];
 const moduleVersion = version;
 const moduleDescription = description;
-const moduleBanner = chalk.green(`${figlet.textSync(moduleName)}\n  ${moduleDescription}\n`);
+const moduleBanner = chalk.green(`${figlet.textSync(moduleName)}\n  ${moduleDescription}\n     https://github.com/ncodefactory/morph-cli\n`);
 
 const init = (clrscr = true) => {
   if (clrscr) {
@@ -31,6 +31,15 @@ const run = async () => {
     .action(async (projectType, options) => {
       try {
         await newHandler(projectType, options.appName, options.force);
+      } catch (error) {
+        console.log(`error: ${error.message}`); // eslint-disable-line no-console
+      }
+    })
+    .command('info')
+    .description('shows an information banner')
+    .action(() => {
+      try {
+        init(false);
       } catch (error) {
         console.log(`error: ${error.message}`); // eslint-disable-line no-console
       }
