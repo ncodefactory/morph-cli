@@ -5,7 +5,7 @@ import path from 'path';
 import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor from './line-processor';
-import { askAuthor, askAppDetails, askRepoDetails } from './inquirer';
+import { askAppName } from './inquirer';
 
 const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
 const ExtractTemplate = (templateFileName, destDir, replaceDictionary) => {
@@ -44,20 +44,13 @@ const ExtractTemplate = (templateFileName, destDir, replaceDictionary) => {
 };
 
 const buildReplaceDictionary = async (type, name) => {
-  const appDetails = await askAppDetails(name);
-  const authorInfo = await askAuthor();
-  const repoDetails = await askRepoDetails(name);
-  const result = [
-    { key: '$NAME$', value: appDetails.name },
-    { key: '$DESCRIPTION$', value: appDetails.description },
-    { key: '$AUTHOR_NAME$', value: authorInfo.authorName },
-    { key: '$AUTHOR_EMAIL$', value: authorInfo.authorEmail },
-    { key: '$REPO_URL$', value: repoDetails.repoUrl },
-    { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
-  ];
+  const appDetails = await askAppName(name);
   switch (type) {
     case 'empty':
-      return result;
+      return [
+        { key: '$NAME$', value: appDetails.name },
+        { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
+      ];
     default:
       throw new Error(`Unsupported type in replaceDictionary builder ${type}`);
   }

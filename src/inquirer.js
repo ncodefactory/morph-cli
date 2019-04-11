@@ -32,7 +32,7 @@ const askAuthor = () => {
   ];
   return inquirer.prompt(questions);
 };
-const askAppDetails = (name) => {
+const askAppName = (name) => {
   const questions = [
     {
       type: 'input',
@@ -46,6 +46,11 @@ const askAppDetails = (name) => {
         return 'Please enter a name of created package.';
       },
     },
+  ];
+  return inquirer.prompt(questions);
+};
+const askAppDescription = (name) => {
+  const questions = [
     {
       type: 'input',
       name: 'description',
@@ -80,4 +85,6 @@ const askRepoDetails = (name) => {
   return inquirer.prompt(questions);
 };
 
-export { askAuthor, askAppDetails, askRepoDetails };
+export {
+  askAuthor, askAppName, askAppDescription, askRepoDetails,
+};
