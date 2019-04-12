@@ -29,9 +29,9 @@ const directoryIsEmpty = (directoryName) => {
   }
 };
 
-const resolveProjectName = (projectName) => {
+const resolveProjectDir = (projectName) => {
   const dirBase = getCurrentDirectoryBase();
-  return projectName || dirBase;
+  return path.resolve(projectName || dirBase);
 };
 
 const throwWhenUnknownProjectType = (projectType) => {
@@ -46,18 +46,20 @@ const throwWhenUnknownProjectType = (projectType) => {
 
 const handler = async (projectType, projectName, force) => {
   throwWhenUnknownProjectType(projectType);
-  const name = resolveProjectName(projectName);
-  if (!directoryExists(name)) {
-    fs.mkdirSync(name);
-  } else if (!directoryIsEmpty(name)) {
+  const projectDir = resolveProjectDir(projectName);
+  if (!directoryExists(projectDir)) {
+    fs.mkdirSync(projectDir, { recursive: true });
+  } else if (!directoryIsEmpty(projectDir)) {
     if (!force) {
-      throw new Error(`Directory is not empty (${name}). Use force to overwrite existing files`);
+      throw new Error(
+        `Directory is not empty (${projectDir}). Use force to overwrite existing files`,
+      );
     }
   }
 
   init(false);
-  const replaceDictionary = await buildReplaceDictionary(projectType, name);
-  build(projectType, name, replaceDictionary);
+  const replaceDictionary = await buildReplaceDictionary(projectType, projectName);
+  build(projectType, projectDir, projectName, replaceDictionary);
 };
 
 export { supportedProjectTypes };

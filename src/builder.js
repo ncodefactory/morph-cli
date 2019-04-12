@@ -57,9 +57,9 @@ const buildReplaceDictionary = async (type, name) => {
 };
 
 /* eslint-disable no-console */
-const writeSummary = (type, name) => {
+const writeSummary = (type, dir, name) => {
   console.log('');
-  console.log(`\tSuccess! Created ${name} at ${path.resolve(path.join(process.cwd(), name))}`);
+  console.log(`\tSuccess! Created ${name} at ${path.resolve(path.join(process.cwd(), dir))}`);
   console.log('\tInside that directory, you can run several commands:');
   console.log('');
   console.log('\t\tnpm run start');
@@ -75,7 +75,7 @@ const writeSummary = (type, name) => {
   console.log('');
   console.log('\tWe suggest that you begin by typing:');
   console.log('');
-  console.log(`\t\tcd ${name}`);
+  console.log(`\t\tcd ${dir}`);
   console.log('\t\tnpm install');
   console.log('\t\tnpm run start');
   console.log('');
@@ -89,13 +89,13 @@ const writeSummary = (type, name) => {
 };
 /* eslint-enable no-console */
 
-const build = (type, directoryName, replaceDictionary) => {
+const build = (type, projectDir, projectName, replaceDictionary) => {
   const templatesDir = nodeEnvIsDebug ? '../assets/templates' : 'templates';
   const templateFileName = path.join(__dirname, templatesDir, `${type}.tar.gz`);
   console.log(); // eslint-disable-line no-console
-  console.log(`building a project ${directoryName}, please wait...`); // eslint-disable-line no-console
-  ExtractTemplate(templateFileName, directoryName, replaceDictionary);
-  writeSummary(type, directoryName);
+  console.log(`building a project ${projectName}, please wait...`); // eslint-disable-line no-console
+  ExtractTemplate(templateFileName, projectDir, replaceDictionary);
+  writeSummary(type, projectDir, projectName);
 };
 export { buildReplaceDictionary };
 export default build;
