@@ -1,3 +1,4 @@
+import repoUrl from 'get-repository-url';
 import fs from 'fs';
 import tar from 'tar';
 import tmp from 'tmp';
@@ -5,7 +6,9 @@ import path from 'path';
 import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor from './line-processor';
-import { askAppName } from './inquirer';
+import {
+  askAppName, askAppDescription, askAuthor, askRepoDetails,
+} from './inquirer';
 
 const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
 const ExtractTemplate = (templateFileName, destDir, replaceDictionary) => {
@@ -45,15 +48,25 @@ const ExtractTemplate = (templateFileName, destDir, replaceDictionary) => {
 
 const buildReplaceDictionary = async (type, name) => {
   const appDetails = await askAppName(name);
-  switch (type) {
-    case 'empty':
-      return [
-        { key: '$NAME$', value: appDetails.name },
-        { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
-      ];
-    default:
-      throw new Error(`Unsupported type in replaceDictionary builder ${type}`);
+  const result = [
+    { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
+    { key: '$NAME$', value: appDetails.name },
+  ];
+
+  if (name !== 'empy') {
+    const appDescription = await askAppDescription(appDetails.name);
+    const authorInfo = await askAuthor();
+    const defaultRepoUrl = await repoUrl(appDetails.name);
+    const repoDetails = await askRepoDetails(defaultRepoUrl);
+    result.push(
+      { key: '$DESCRIPTION$', value: appDescription.description },
+      { key: '$AUTHOR_EMAIL$', value: authorInfo.authorEmail },
+      { key: '$AUTHOR_NAME$', value: authorInfo.authorName },
+      { key: '$REPO_URL', value: repoDetails.repoUrl },
+    );
   }
+
+  return result;
 };
 
 /* eslint-disable no-console */

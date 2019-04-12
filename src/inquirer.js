@@ -73,7 +73,7 @@ const askRepoDetails = (name) => {
       type: 'input',
       name: 'repoUrl',
       message: 'Repo url:',
-      default: `${name}.git`,
+      default: name,
       validate(value) {
         if (value.length) {
           return true;
