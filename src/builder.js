@@ -53,7 +53,7 @@ const buildReplaceDictionary = async (type, name) => {
     { key: '$NAME$', value: appDetails.name },
   ];
 
-  if (name !== 'empy') {
+  if (type !== 'empty') {
     const appDescription = await askAppDescription(appDetails.name);
     const authorInfo = await askAuthor();
     const defaultRepoUrl = await repoUrl(appDetails.name);
@@ -62,7 +62,7 @@ const buildReplaceDictionary = async (type, name) => {
       { key: '$DESCRIPTION$', value: appDescription.description },
       { key: '$AUTHOR_EMAIL$', value: authorInfo.authorEmail },
       { key: '$AUTHOR_NAME$', value: authorInfo.authorName },
-      { key: '$REPO_URL', value: repoDetails.repoUrl },
+      { key: '$REPO_URL$', value: repoDetails.repoUrl },
     );
   }
 
@@ -71,8 +71,9 @@ const buildReplaceDictionary = async (type, name) => {
 
 /* eslint-disable no-console */
 const writeSummary = (type, dir, name) => {
+  const relativeDir = path.relative(process.cwd(), dir);
   console.log('');
-  console.log(`\tSuccess! Created ${name} at ${path.resolve(path.join(process.cwd(), dir))}`);
+  console.log(`\tSuccess! Created ${name} at ${relativeDir}`);
   console.log('\tInside that directory, you can run several commands:');
   console.log('');
   if (type === 'empty') {
@@ -93,7 +94,7 @@ const writeSummary = (type, dir, name) => {
   console.log('');
   console.log('\tWe suggest that you begin by typing:');
   console.log('');
-  console.log(`\t\tcd ${dir}`);
+  console.log(`\t\tcd ${relativeDir}`);
   console.log('\t\tnpm install');
   if (type === 'empty') {
     console.log('\t\tnpm run start');
