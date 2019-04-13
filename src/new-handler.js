@@ -5,10 +5,11 @@ import build, { buildReplaceDictionary } from './builder';
 
 const supportedProjectTypes = [
   { name: 'empty', desc: 'empty node app' },
-  // { name: 'module', desc: 'npm module' },
-  // { name: 'api', desc: 'web api' },
   // { name: 'cli', desc: 'command line interface app' },
+  { name: 'module', desc: 'npm module' },
+  // { name: 'webapi', desc: 'web api serwer or web app backend layer' },
   // { name: 'component', desc: 'react app component' },
+  // { name: 'webapp', desc: 'react app' },
 ];
 
 const getCurrentDirectoryBase = () => path.basename(process.cwd());

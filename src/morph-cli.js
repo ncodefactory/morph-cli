@@ -8,7 +8,11 @@ import newHandler, { supportedProjectTypes } from './new-handler';
 const moduleName = name.split('/')[1];
 const moduleVersion = version;
 const moduleDescription = description;
-const moduleBanner = chalk.green(`${figlet.textSync(moduleName)}\n  ${moduleDescription}\n     https://github.com/ncodefactory/morph-cli\n`);
+const moduleBanner = chalk.green(
+  `${figlet.textSync(
+    moduleName,
+  )}\n  ${moduleDescription}\n     https://github.com/ncodefactory/morph-cli\n`,
+);
 
 const init = (clrscr = true) => {
   if (clrscr) {
@@ -45,7 +49,8 @@ const run = async () => {
       });
     });
 
-  program.command('info')
+  program
+    .command('info')
     .description('shows an information banner')
     .action(() => {
       try {
