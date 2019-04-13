@@ -56,7 +56,11 @@ const buildReplaceDictionary = async (type, name) => {
   if (type !== 'empty') {
     const appDescription = await askAppDescription(appDetails.name);
     const authorInfo = await askAuthor();
-    const defaultRepoUrl = await repoUrl(appDetails.name);
+    const defaultRepoUrl = `https://github.com/${
+      appDetails.name.length && appDetails.name[0] === '@'
+        ? appDetails.name.slice(1)
+        : appDetails.name
+    }`;
     const repoDetails = await askRepoDetails(defaultRepoUrl);
     result.push(
       { key: '$DESCRIPTION$', value: appDescription.description },
