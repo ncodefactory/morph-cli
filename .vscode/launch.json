@@ -49,7 +49,8 @@
       "outFiles": [
         "${workspaceRoot}/.compiled/**/*.js"
       ],
-      "internalConsoleOptions": "openOnSessionStart"
+      "internalConsoleOptions": "openOnSessionStart",
+      "preLaunchTask": "compile",
     },
     {
       "name": "RUN Current Test File (without debugging)",
