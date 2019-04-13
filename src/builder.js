@@ -75,9 +75,11 @@ const writeSummary = (type, dir, name) => {
   console.log(`\tSuccess! Created ${name} at ${path.resolve(path.join(process.cwd(), dir))}`);
   console.log('\tInside that directory, you can run several commands:');
   console.log('');
-  console.log('\t\tnpm run start');
-  console.log('\t\t\tStarts the application');
-  console.log('');
+  if (type === 'empty') {
+    console.log('\t\tnpm run start');
+    console.log('\t\t\tStarts the application');
+    console.log('');
+  }
   console.log('\t\tnpm run test');
   console.log('\t\t\tRuns the unit tests');
   console.log('');
@@ -93,15 +95,16 @@ const writeSummary = (type, dir, name) => {
   console.log('');
   console.log(`\t\tcd ${dir}`);
   console.log('\t\tnpm install');
-  console.log('\t\tnpm run start');
+  if (type === 'empty') {
+    console.log('\t\tnpm run start');
+  }
+
+  if (type === 'module') {
+    console.log('\t\tnpm run test');
+  }
+
   console.log('');
   console.log('\tHappy hacking!');
-  switch (type) {
-    case 'empty':
-      return;
-    default:
-      throw new Error(`Unsupported type in summary writer ${type}`);
-  }
 };
 /* eslint-enable no-console */
 
