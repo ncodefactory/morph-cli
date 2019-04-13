@@ -86,6 +86,9 @@ const writeSummary = (type, dir, name) => {
     '\t\t\tCreates transpiled versions of source files with source maps (required for debugging)',
   );
   console.log('');
+  console.log('\t\tnpm run upgrade');
+  console.log('\t\t\tUpgrades dependencies to the latest verisons');
+  console.log('');
   console.log('\tWe suggest that you begin by typing:');
   console.log('');
   console.log(`\t\tcd ${dir}`);
