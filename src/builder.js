@@ -1,4 +1,3 @@
-import repoUrl from 'get-repository-url';
 import fs from 'fs';
 import tar from 'tar';
 import tmp from 'tmp';
