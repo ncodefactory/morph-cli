@@ -11,7 +11,7 @@ const moduleDescription = description;
 const moduleBanner = chalk.green(
   `${figlet.textSync(
     moduleName,
-  )}\n  ${moduleDescription}\n     https://github.com/ncodefactory/morph-cli\n`,
+  )}\n  ${moduleDescription}\n     https://github.com/ncodefactory/morph-cli\n\n     type mo --help for application usage help`,
 );
 
 const init = (clrscr = true) => {
