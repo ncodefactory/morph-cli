@@ -15,6 +15,7 @@ const askAuthor = () => {
         if (value.length) {
           return true;
         }
+
         return 'Please enter a name of the author of application.';
       },
     },
@@ -26,6 +27,7 @@ const askAuthor = () => {
         if (value.length && validateEmail(value)) {
           return true;
         }
+
         return 'Please enter a valid e-mail of the author of application.';
       },
     },
@@ -43,7 +45,25 @@ const askAppName = (name) => {
         if (value.length) {
           return true;
         }
+
         return 'Please enter a name of created package.';
+      },
+    },
+  ];
+  return inquirer.prompt(questions);
+};
+const askAppBinary = () => {
+  const questions = [
+    {
+      type: 'input',
+      name: 'binName',
+      message: 'Bin:',
+      validate(value) {
+        if (value.length) {
+          return true;
+        }
+
+        return 'Please enter a name of shell comand for run this cli.';
       },
     },
   ];
@@ -86,5 +106,5 @@ const askRepoDetails = (name) => {
 };
 
 export {
-  askAuthor, askAppName, askAppDescription, askRepoDetails,
+  askAuthor, askAppName, askAppBinary, askAppDescription, askRepoDetails,
 };

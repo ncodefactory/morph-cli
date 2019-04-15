@@ -6,7 +6,7 @@ import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor from './line-processor';
 import {
-  askAppName, askAppDescription, askAuthor, askRepoDetails,
+  askAppName, askAppBinary, askAppDescription, askAuthor, askRepoDetails,
 } from './inquirer';
 
 const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
@@ -52,6 +52,11 @@ const buildReplaceDictionary = async (type, name) => {
     { key: '$NAME$', value: appDetails.name },
   ];
 
+  if (type === 'cli') {
+    const binInfo = await askAppBinary();
+    result.push({ key: '$BIN$', value: binInfo.binName });
+  }
+
   if (type !== 'empty') {
     const appDescription = await askAppDescription(appDetails.name);
     const authorInfo = await askAuthor();
@@ -73,10 +78,14 @@ const buildReplaceDictionary = async (type, name) => {
 };
 
 /* eslint-disable no-console */
-const writeSummary = (type, dir, name) => {
+const writeSummary = (type, dir, replaceDictionary) => {
   const relativeDir = path.relative(process.cwd(), dir);
   console.log('');
-  console.log(`\tSuccess! Created ${name} at ${relativeDir}`);
+  console.log(
+    `\tSuccess! Created ${
+      replaceDictionary.find(item => item.key === '$NAME$').value
+    } at ${relativeDir}`,
+  );
   console.log('\tInside that directory, you can run several commands:');
   console.log('');
   if (type === 'empty') {
@@ -84,6 +93,16 @@ const writeSummary = (type, dir, name) => {
     console.log('\t\t\tStarts the application');
     console.log('');
   }
+
+  if (type === 'cli') {
+    console.log('\t\tnpm run add');
+    console.log('\t\t\tInstalls the application for tests');
+    console.log('');
+    console.log('\t\tnpm run remove');
+    console.log('\t\t\tUninstalls the application from tests');
+    console.log('');
+  }
+
   console.log('\t\tnpm run test');
   console.log('\t\t\tRuns the unit tests');
   console.log('');
@@ -107,18 +126,28 @@ const writeSummary = (type, dir, name) => {
     console.log('\t\tnpm run test');
   }
 
+  if (type === 'cli') {
+    console.log('\t\tnpm run add');
+    console.log(`\t\t${replaceDictionary.find(item => item.key === '$BIN$').value}`);
+    console.log('\t\tnpm run remove');
+  }
   console.log('');
   console.log('\tHappy hacking!');
 };
 /* eslint-enable no-console */
 
-const build = (type, projectDir, projectName, replaceDictionary) => {
+const build = (type, projectDir, replaceDictionary) => {
   const templatesDir = nodeEnvIsDebug ? '../assets/templates' : 'templates';
   const templateFileName = path.join(__dirname, templatesDir, `${type}.tar.gz`);
   console.log(); // eslint-disable-line no-console
-  console.log(`building a project ${projectName}, please wait...`); // eslint-disable-line no-console
+  // eslint-disable-next-line no-console
+  console.log(
+    `building a project ${
+      replaceDictionary.find(item => item.key === '$NAME$').value
+    }, please wait...`,
+  ); // eslint-disable-line no-console
   ExtractTemplate(templateFileName, projectDir, replaceDictionary);
-  writeSummary(type, projectDir, projectName);
+  writeSummary(type, projectDir, replaceDictionary);
 };
 export { buildReplaceDictionary };
 export default build;
