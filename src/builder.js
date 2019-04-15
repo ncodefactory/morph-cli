@@ -54,7 +54,7 @@ const buildReplaceDictionary = async (type, name) => {
 
   if (type === 'cli') {
     const binInfo = await askAppBinary();
-    result.push({ key: '$BIN', value: binInfo.binName });
+    result.push({ key: '$BIN$', value: binInfo.binName });
   }
 
   if (type !== 'empty') {
