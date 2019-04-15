@@ -15,7 +15,7 @@ const askAuthor = () => {
         if (value.length) {
           return true;
         }
-        
+
         return 'Please enter a name of the author of application.';
       },
     },
@@ -52,17 +52,13 @@ const askAppName = (name) => {
   ];
   return inquirer.prompt(questions);
 };
-const askAppBinary = (name) => {
+const askAppBinary = () => {
   const questions = [
     {
       type: 'input',
       name: 'binName',
       message: 'Bin:',
       validate(value) {
-        if(value===name){
-          return `Please enter a name of shell comand for run this cli. Attention: The name must be different than ${name}`;
-        }
-
         if (value.length) {
           return true;
         }
