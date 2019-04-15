@@ -78,10 +78,14 @@ const buildReplaceDictionary = async (type, name) => {
 };
 
 /* eslint-disable no-console */
-const writeSummary = (type, dir, name) => {
+const writeSummary = (type, dir, replaceDictionary) => {
   const relativeDir = path.relative(process.cwd(), dir);
   console.log('');
-  console.log(`\tSuccess! Created ${name} at ${relativeDir}`);
+  console.log(
+    `\tSuccess! Created ${
+      replaceDictionary.find(item => item.key === '$NAME$').value
+    } at ${relativeDir}`,
+  );
   console.log('\tInside that directory, you can run several commands:');
   console.log('');
   if (type === 'empty') {
@@ -124,7 +128,7 @@ const writeSummary = (type, dir, name) => {
 
   if (type === 'cli') {
     console.log('\t\tnpm run add');
-    console.log('\t\ttype entered bin for your cli');
+    console.log(`\t\t${replaceDictionary.find(item => item.key === '$BIN$').value}`);
     console.log('\t\tnpm run remove');
   }
   console.log('');
@@ -132,13 +136,18 @@ const writeSummary = (type, dir, name) => {
 };
 /* eslint-enable no-console */
 
-const build = (type, projectDir, projectName, replaceDictionary) => {
+const build = (type, projectDir, replaceDictionary) => {
   const templatesDir = nodeEnvIsDebug ? '../assets/templates' : 'templates';
   const templateFileName = path.join(__dirname, templatesDir, `${type}.tar.gz`);
   console.log(); // eslint-disable-line no-console
-  console.log(`building a project ${projectName}, please wait...`); // eslint-disable-line no-console
+  // eslint-disable-next-line no-console
+  console.log(
+    `building a project ${
+      replaceDictionary.find(item => item.key === '$NAME$').value
+    }, please wait...`,
+  ); // eslint-disable-line no-console
   ExtractTemplate(templateFileName, projectDir, replaceDictionary);
-  writeSummary(type, projectDir, projectName);
+  writeSummary(type, projectDir, replaceDictionary);
 };
 export { buildReplaceDictionary };
 export default build;

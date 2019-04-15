@@ -60,7 +60,7 @@ const handler = async (projectType, projectName, force) => {
 
   showModuleBanner(false);
   const replaceDictionary = await buildReplaceDictionary(projectType, projectName);
-  build(projectType, projectDir, projectName, replaceDictionary);
+  build(projectType, projectDir, replaceDictionary);
 };
 
 export { supportedProjectTypes };
