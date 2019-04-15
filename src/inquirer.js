@@ -49,13 +49,12 @@ const askAppName = (name) => {
   ];
   return inquirer.prompt(questions);
 };
-const askAppBinary = (name) => {
+const askAppBinary = () => {
   const questions = [
     {
       type: 'input',
       name: 'binName',
       message: 'Bin:',
-      default: `${name}`,
       validate(value) {
         if (value.length) {
           return true;
