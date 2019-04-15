@@ -49,6 +49,23 @@ const askAppName = (name) => {
   ];
   return inquirer.prompt(questions);
 };
+const askAppBinary = (name) => {
+  const questions = [
+    {
+      type: 'input',
+      name: 'binName',
+      message: 'Bin:',
+      default: `${name}`,
+      validate(value) {
+        if (value.length) {
+          return true;
+        }
+        return 'Please enter a name of shell comand for run this cli.';
+      },
+    },
+  ];
+  return inquirer.prompt(questions);
+};
 const askAppDescription = (name) => {
   const questions = [
     {
@@ -86,5 +103,5 @@ const askRepoDetails = (name) => {
 };
 
 export {
-  askAuthor, askAppName, askAppDescription, askRepoDetails,
+  askAuthor, askAppName, askAppBinary, askAppDescription, askRepoDetails,
 };

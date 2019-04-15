@@ -6,7 +6,7 @@ import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor from './line-processor';
 import {
-  askAppName, askAppDescription, askAuthor, askRepoDetails,
+  askAppName, askAppBinary, askAppDescription, askAuthor, askRepoDetails,
 } from './inquirer';
 
 const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
@@ -52,6 +52,13 @@ const buildReplaceDictionary = async (type, name) => {
     { key: '$NAME$', value: appDetails.name },
   ];
 
+  if (type === 'cli') {
+    const binInfo = await askAppBinary();
+    result.push(
+      { key: '$BIN', value: binInfo.binName },
+    );
+  }
+
   if (type !== 'empty') {
     const appDescription = await askAppDescription(appDetails.name);
     const authorInfo = await askAuthor();
@@ -84,6 +91,16 @@ const writeSummary = (type, dir, name) => {
     console.log('\t\t\tStarts the application');
     console.log('');
   }
+
+  if (type === 'cli') {
+    console.log('\t\tnpm run add');
+    console.log('\t\t\tInstalls the application for tests');
+    console.log('');
+    console.log('\t\tnpm run remove');
+    console.log('\t\t\tUninstalls the application from tests');
+    console.log('');
+  }
+
   console.log('\t\tnpm run test');
   console.log('\t\t\tRuns the unit tests');
   console.log('');
@@ -107,6 +124,11 @@ const writeSummary = (type, dir, name) => {
     console.log('\t\tnpm run test');
   }
 
+  if (type === 'cli') {
+    console.log('\t\tnpm run add');
+    console.log('\t\ttype entered bin for your cli');
+    console.log('\t\tnpm run remove');
+  }
   console.log('');
   console.log('\tHappy hacking!');
 };
