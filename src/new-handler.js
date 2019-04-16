@@ -6,9 +6,9 @@ import build, { buildReplaceDictionary } from './builder';
 const supportedProjectTypes = [
   { name: 'empty', desc: 'empty node app' },
   { name: 'module', desc: 'npm module' },
+  { name: 'component', desc: 'react app component' },
   { name: 'cli', desc: 'command line interface app' },
   // { name: 'webapi', desc: 'web api serwer or web app backend layer' },
-  // { name: 'component', desc: 'react app component' },
   // { name: 'webapp', desc: 'react app' },
 ];
 
@@ -59,7 +59,7 @@ const handler = async (projectType, projectName, force) => {
   }
 
   showModuleBanner(false);
-  const replaceDictionary = await buildReplaceDictionary(projectType, projectName);
+  const replaceDictionary = await buildReplaceDictionary(projectType, projectDir, projectName);
   build(projectType, projectDir, replaceDictionary);
 };
 

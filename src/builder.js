@@ -6,7 +6,12 @@ import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor from './line-processor';
 import {
-  askAppName, askAppBinary, askAppDescription, askAuthor, askRepoDetails,
+  askAppName,
+  askAppBinary,
+  askAppDescription,
+  askAuthor,
+  askRepoDetails,
+  askComponentDetails,
 } from './inquirer';
 
 const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
@@ -45,9 +50,10 @@ const ExtractTemplate = (templateFileName, destDir, replaceDictionary) => {
   });
 };
 
-const buildReplaceDictionary = async (type, name) => {
+const buildReplaceDictionary = async (type, projectDir, name) => {
   const appDetails = await askAppName(name);
   const result = [
+    { key: '$DIRECTORY_NAME$', value: projectDir },
     { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
     { key: '$NAME$', value: appDetails.name },
   ];
@@ -55,6 +61,11 @@ const buildReplaceDictionary = async (type, name) => {
   if (type === 'cli') {
     const binInfo = await askAppBinary();
     result.push({ key: '$BIN$', value: binInfo.binName });
+  }
+
+  if (type === 'component') {
+    const componentInfo = await askComponentDetails();
+    result.push({ key: '$COMPONENT_NAME$', value: componentInfo.componentName });
   }
 
   if (type !== 'empty') {

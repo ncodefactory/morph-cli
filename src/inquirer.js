@@ -34,6 +34,7 @@ const askAuthor = () => {
   ];
   return inquirer.prompt(questions);
 };
+
 const askAppName = (name) => {
   const questions = [
     {
@@ -52,6 +53,7 @@ const askAppName = (name) => {
   ];
   return inquirer.prompt(questions);
 };
+
 const askAppBinary = () => {
   const questions = [
     {
@@ -63,12 +65,31 @@ const askAppBinary = () => {
           return true;
         }
 
-        return 'Please enter a name of shell comand for run this cli.';
+        return 'Please enter a name of shell command for run this cli.';
       },
     },
   ];
   return inquirer.prompt(questions);
 };
+
+const askComponentDetails = () => {
+  const questions = [
+    {
+      type: 'input',
+      name: 'componentName',
+      message: 'Component name:',
+      validate(value) {
+        if (value.length) {
+          return true;
+        }
+
+        return 'Please enter a name of created component.';
+      },
+    },
+  ];
+  return inquirer.prompt(questions);
+};
+
 const askAppDescription = (name) => {
   const questions = [
     {
@@ -106,5 +127,10 @@ const askRepoDetails = (name) => {
 };
 
 export {
-  askAuthor, askAppName, askAppBinary, askAppDescription, askRepoDetails,
+  askAuthor,
+  askAppName,
+  askAppBinary,
+  askAppDescription,
+  askRepoDetails,
+  askComponentDetails,
 };
