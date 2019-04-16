@@ -14,8 +14,22 @@ import {
   askComponentDetails,
 } from './inquirer';
 
+const endsWithAny = (text, anyStrings) => {
+  if (anyStrings == null) {
+    return false;
+  }
+
+  for (let i = 0; i < anyStrings.length; i = +1) {
+    if (text.endsWith(anyStrings[i])) {
+      return true;
+    }
+  }
+
+  return false;
+};
 const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
-const ExtractTemplate = (templateFileName, destDir, replaceDictionary) => {
+
+const ExtractTemplate = (templateFileName, destDir, replaceDictionary, skipFileNames) => {
   if (!fs.existsSync(templateFileName)) {
     throw new Error(`Project template file not found ${templateFileName}`);
   }
@@ -39,7 +53,12 @@ const ExtractTemplate = (templateFileName, destDir, replaceDictionary) => {
 
           const processor = fileProcessor(lineProcessor(replaceDictionary));
           files.forEach((file) => {
-            processor(file, file.replace(tmpDir, destDir));
+            const destFile = file.replace(tmpDir, destDir);
+            if (endsWithAny(file, skipFileNames)) {
+              fs.copyFileSync(file, destFile);
+            } else {
+              processor(file, destFile);
+            }
           });
         });
         cleanupCallback();
@@ -54,6 +73,7 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
   const appDetails = await askAppName(name);
   const result = [
     { key: '$DIRECTORY_NAME$', value: projectDir },
+    { key: '$PATH_SEPARATOR$', value: path.sep },
     { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
     { key: '$NAME$', value: appDetails.name },
   ];
@@ -129,7 +149,7 @@ const writeSummary = (type, dir, replaceDictionary) => {
   console.log('');
   console.log(`\t\tcd ${relativeDir}`);
   console.log('\t\tnpm install');
-  if (type === 'empty') {
+  if (type === 'empty' || type === 'component') {
     console.log('\t\tnpm run start');
   }
 
@@ -144,6 +164,7 @@ const writeSummary = (type, dir, replaceDictionary) => {
   }
   console.log('');
   console.log('\tHappy hacking!');
+  console.log('');
 };
 /* eslint-enable no-console */
 
@@ -157,7 +178,11 @@ const build = (type, projectDir, replaceDictionary) => {
       replaceDictionary.find(item => item.key === '$NAME$').value
     }, please wait...`,
   ); // eslint-disable-line no-console
-  ExtractTemplate(templateFileName, projectDir, replaceDictionary);
+  const skipFileNames = [];
+  if (type === 'component') {
+    skipFileNames.push('favicon.ico');
+  }
+  ExtractTemplate(templateFileName, projectDir, replaceDictionary, skipFileNames);
   writeSummary(type, projectDir, replaceDictionary);
 };
 export { buildReplaceDictionary };

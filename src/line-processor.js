@@ -7,9 +7,9 @@ const replaceAll = (str, find, replace) => {
   return result;
 };
 
-const lineProcessor = dictionary => (line) => {
+const lineProcessor = replaceDictionary => (line) => {
   let result = line;
-  dictionary.forEach((element) => {
+  replaceDictionary.forEach((element) => {
     result = replaceAll(result, element.key, element.value);
   });
 
