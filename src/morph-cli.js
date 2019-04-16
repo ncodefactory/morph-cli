@@ -1,26 +1,11 @@
-import chalk from 'chalk';
-import clear from 'clear';
-import figlet from 'figlet';
 import program from 'commander';
 import { name, version, description } from '../package.json';
 import newHandler, { supportedProjectTypes } from './new-handler';
+import showModuleBanner from './moduleBanner';
 
 const moduleName = name.split('/')[1];
 const moduleVersion = version;
 const moduleDescription = description;
-const moduleBanner = chalk.green(
-  `${figlet.textSync(
-    moduleName,
-  )}\n  ${moduleDescription}\n     https://github.com/ncodefactory/morph-cli\n`,
-);
-
-const init = (clrscr = true) => {
-  if (clrscr) {
-    clear();
-  }
-
-  console.log(moduleBanner); // eslint-disable-line no-console
-};
 
 const run = async () => {
   program
@@ -54,7 +39,7 @@ const run = async () => {
     .description('shows an information banner')
     .action(() => {
       try {
-        init(false);
+        showModuleBanner(false);
       } catch (error) {
         console.log(`error: ${error.message}`); // eslint-disable-line no-console
       }
@@ -67,5 +52,5 @@ const run = async () => {
 };
 
 export {
-  moduleName, moduleVersion, moduleDescription, moduleBanner, init, run,
+  moduleName, moduleVersion, moduleDescription, run,
 };

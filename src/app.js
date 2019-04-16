@@ -1,3 +1,3 @@
-import { init } from './morph-cli';
+import showModuleBanner from './moduleBanner';
 
-init(false);
+showModuleBanner(false);

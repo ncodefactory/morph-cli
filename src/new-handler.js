@@ -1,12 +1,12 @@
 import path from 'path';
 import fs from 'fs';
-import { init } from './morph-cli';
+import showModuleBanner from './moduleBanner';
 import build, { buildReplaceDictionary } from './builder';
 
 const supportedProjectTypes = [
   { name: 'empty', desc: 'empty node app' },
-  // { name: 'cli', desc: 'command line interface app' },
   { name: 'module', desc: 'npm module' },
+  { name: 'cli', desc: 'command line interface app' },
   // { name: 'webapi', desc: 'web api serwer or web app backend layer' },
   // { name: 'component', desc: 'react app component' },
   // { name: 'webapp', desc: 'react app' },
@@ -58,9 +58,9 @@ const handler = async (projectType, projectName, force) => {
     }
   }
 
-  init(false);
+  showModuleBanner(false);
   const replaceDictionary = await buildReplaceDictionary(projectType, projectName);
-  build(projectType, projectDir, projectName, replaceDictionary);
+  build(projectType, projectDir, replaceDictionary);
 };
 
 export { supportedProjectTypes };
