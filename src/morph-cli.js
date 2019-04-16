@@ -1,7 +1,7 @@
 import program from 'commander';
 import { name, version, description } from '../package.json';
 import newHandler, { supportedProjectTypes } from './new-handler';
-import showModuleBanner from './moduleBanner';
+import showModuleBanner from './module-banner';
 
 const moduleName = name.split('/')[1];
 const moduleVersion = version;

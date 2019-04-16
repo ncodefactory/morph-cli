@@ -1,3 +1,3 @@
-import showModuleBanner from './moduleBanner';
+import showModuleBanner from './module-banner';
 
 showModuleBanner(false);

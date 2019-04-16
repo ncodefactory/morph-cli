@@ -1,6 +1,6 @@
 import path from 'path';
 import fs from 'fs';
-import showModuleBanner from './moduleBanner';
+import showModuleBanner from './module-banner';
 import build, { buildReplaceDictionary } from './builder';
 
 const supportedProjectTypes = [
