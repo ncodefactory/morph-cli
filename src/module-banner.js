@@ -6,7 +6,7 @@ import { name, description } from '../package.json';
 const moduleBanner = chalk.green(
   `${figlet.textSync(
     name.split('/')[1],
-  )}\n  ${description}\n     https://github.com/ncodefactory/morph-cli\n\n     type mo --help for application usage help`,
+  )}\n  ${description}\n     https://github.com/ncodefactory/morph-cli\n\n     type mo --help for application usage help\n`,
 );
 
 const showModuleBanner = (clrscr = true) => {
