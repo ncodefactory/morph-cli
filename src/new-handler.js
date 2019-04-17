@@ -1,7 +1,8 @@
 import path from 'path';
 import fs from 'fs';
 import showModuleBanner from './module-banner';
-import build, { buildReplaceDictionary } from './builder';
+import build from './builder';
+import { directoryExists, directoryIsEmpty } from './fs-helpers';
 
 const supportedProjectTypes = [
   { name: 'empty', desc: 'empty node app' },
@@ -13,22 +14,6 @@ const supportedProjectTypes = [
 ];
 
 const getCurrentDirectoryBase = () => path.basename(process.cwd());
-
-const directoryExists = (directoryName) => {
-  try {
-    return fs.statSync(directoryName).isDirectory();
-  } catch (err) {
-    return false;
-  }
-};
-
-const directoryIsEmpty = (directoryName) => {
-  try {
-    return !fs.readdirSync(directoryName).length;
-  } catch (err) {
-    return false;
-  }
-};
 
 const resolveProjectDir = (projectName) => {
   const dirBase = getCurrentDirectoryBase();
@@ -45,9 +30,9 @@ const throwWhenUnknownProjectType = (projectType) => {
   }
 };
 
-const handler = async (projectType, projectName, force) => {
+const handler = async (projectType, dirName, force) => {
   throwWhenUnknownProjectType(projectType);
-  const projectDir = resolveProjectDir(projectName);
+  const projectDir = resolveProjectDir(dirName);
   if (!directoryExists(projectDir)) {
     fs.mkdirSync(projectDir, { recursive: true });
   } else if (!directoryIsEmpty(projectDir)) {
@@ -59,8 +44,7 @@ const handler = async (projectType, projectName, force) => {
   }
 
   showModuleBanner(false);
-  const replaceDictionary = await buildReplaceDictionary(projectType, projectDir, projectName);
-  build(projectType, projectDir, replaceDictionary);
+  build(projectType, projectDir, dirName);
 };
 
 export { supportedProjectTypes };

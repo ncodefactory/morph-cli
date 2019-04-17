@@ -13,24 +13,23 @@ const run = async () => {
     .command('new <projectType>')
     .description('creates a new morph project of indicated type')
     .option(
-      '-n, --app-name [appName]',
-      'project name (use current directory name if not specified)',
+      '-n, --dir-name [dirName]',
+      'project root directory name (use current directory name if not specified)',
     )
     .option('-f, --force [force]', 'use this option for overwrite existing files')
     .action(async (projectType, options) => {
       try {
-        await newHandler(projectType, options.appName, options.force);
+        await newHandler(projectType, options.dirName, options.force);
       } catch (error) {
         console.log(`error: ${error.message}`); // eslint-disable-line no-console
       }
     })
     .on('--help', () => {
       console.log(''); // eslint-disable-line no-console
-      console.log('available project types:'); // eslint-disable-line no-console
-      console.log('------------------------'); // eslint-disable-line no-console
-
+      console.log('Available project types:'); // eslint-disable-line no-console
       supportedProjectTypes.forEach((value) => {
-        console.log(`${value.name} - ${value.desc}`); // eslint-disable-line no-console
+        const formattedName = value.name + ' '.repeat(9 - value.name.length);
+        console.log(`  ${formattedName} - ${value.desc}`); // eslint-disable-line no-console
       });
     });
 

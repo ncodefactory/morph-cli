@@ -16,4 +16,5 @@ const lineProcessor = replaceDictionary => (line) => {
   return result;
 };
 
+export { replaceAll };
 export default lineProcessor;

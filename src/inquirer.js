@@ -40,7 +40,7 @@ const askAppName = (name) => {
     {
       type: 'input',
       name: 'name',
-      message: 'Name:',
+      message: 'Package name:',
       default: `${name}`,
       validate(value) {
         if (value.length) {
@@ -90,13 +90,13 @@ const askComponentDetails = () => {
   return inquirer.prompt(questions);
 };
 
-const askAppDescription = (name) => {
+const askAppDescription = (name, type) => {
   const questions = [
     {
       type: 'input',
       name: 'description',
       message: 'Description:',
-      default: `${name} - an application created using morph-cli`,
+      default: `${name} - an ${type} created using morph-cli`,
       validate(value) {
         if (value.length) {
           return true;

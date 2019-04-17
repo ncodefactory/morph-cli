@@ -4,7 +4,7 @@ import tmp from 'tmp';
 import path from 'path';
 import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
-import lineProcessor from './line-processor';
+import lineProcessor, { replaceAll } from './line-processor';
 import {
   askAppName,
   askAppBinary,
@@ -13,6 +13,8 @@ import {
   askRepoDetails,
   askComponentDetails,
 } from './inquirer';
+import { makeDirIfNotExists } from './fs-helpers';
+import { isWin } from './os-helpers';
 
 const endsWithAny = (text, anyStrings) => {
   if (anyStrings == null) {
@@ -29,7 +31,7 @@ const endsWithAny = (text, anyStrings) => {
 };
 const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
 
-const ExtractTemplate = (templateFileName, destDir, replaceDictionary, skipFileNames) => {
+const extractTemplate = (templateFileName, destDir, replaceDictionary, skipFileNames) => {
   if (!fs.existsSync(templateFileName)) {
     throw new Error(`Project template file not found ${templateFileName}`);
   }
@@ -55,6 +57,7 @@ const ExtractTemplate = (templateFileName, destDir, replaceDictionary, skipFileN
           files.forEach((file) => {
             const destFile = file.replace(tmpDir, destDir);
             if (endsWithAny(file, skipFileNames)) {
+              makeDirIfNotExists(path.dirname(destFile));
               fs.copyFileSync(file, destFile);
             } else {
               processor(file, destFile);
@@ -73,7 +76,11 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
   const appDetails = await askAppName(name);
   const result = [
     { key: '$DIRECTORY_NAME$', value: projectDir },
-    { key: '$PATH_SEPARATOR$', value: path.sep },
+    {
+      key: '$DIRECTORY_PLATFORM_STRING$',
+      value: replaceAll(projectDir, path.sep, '$PATH_SEPARATOR$'),
+    },
+    { key: '$PATH_SEPARATOR$', value: isWin() ? `${path.sep}${path.sep}` : path.sep },
     { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
     { key: '$NAME$', value: appDetails.name },
   ];
@@ -89,7 +96,7 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
   }
 
   if (type !== 'empty') {
-    const appDescription = await askAppDescription(appDetails.name);
+    const appDescription = await askAppDescription(appDetails.name, type);
     const authorInfo = await askAuthor();
     const defaultRepoUrl = `https://github.com/${
       appDetails.name.length && appDetails.name[0] === '@'
@@ -168,9 +175,10 @@ const writeSummary = (type, dir, replaceDictionary) => {
 };
 /* eslint-enable no-console */
 
-const build = (type, projectDir, replaceDictionary) => {
+const build = async (projectType, projectDir, projectName) => {
+  const replaceDictionary = await buildReplaceDictionary(projectType, projectDir, projectName);
   const templatesDir = nodeEnvIsDebug ? '../assets/templates' : 'templates';
-  const templateFileName = path.join(__dirname, templatesDir, `${type}.tar.gz`);
+  const templateFileName = path.join(__dirname, templatesDir, `${projectType}.tar.gz`);
   console.log(); // eslint-disable-line no-console
   // eslint-disable-next-line no-console
   console.log(
@@ -179,11 +187,12 @@ const build = (type, projectDir, replaceDictionary) => {
     }, please wait...`,
   ); // eslint-disable-line no-console
   const skipFileNames = [];
-  if (type === 'component') {
+  if (projectType === 'component') {
     skipFileNames.push('favicon.ico');
   }
-  ExtractTemplate(templateFileName, projectDir, replaceDictionary, skipFileNames);
-  writeSummary(type, projectDir, replaceDictionary);
+
+  extractTemplate(templateFileName, projectDir, replaceDictionary, skipFileNames);
+  writeSummary(projectType, projectDir, replaceDictionary);
 };
-export { buildReplaceDictionary };
+
 export default build;
