@@ -29,6 +29,7 @@ const endsWithAny = (text, anyStrings) => {
 
   return false;
 };
+
 const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
 
 const extractTemplate = (templateFileName, destDir, replaceDictionary, skipFileNames) => {
@@ -169,6 +170,7 @@ const writeSummary = (type, dir, replaceDictionary) => {
     console.log(`\t\t${replaceDictionary.find(item => item.key === '$BIN$').value}`);
     console.log('\t\tnpm run remove');
   }
+
   console.log('');
   console.log('\tHappy hacking!');
   console.log('');
