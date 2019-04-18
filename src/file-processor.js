@@ -2,6 +2,7 @@ import Stream from 'stream';
 import readline from 'readline';
 import path from 'path';
 import fs from 'fs';
+import { makeDirIfNotExists } from './fs-helpers';
 
 const fileProcessor = lineProcessor => (sourcefileName, destinationFileName) => {
   if (fs.existsSync(destinationFileName)) {
@@ -19,9 +20,7 @@ const fileProcessor = lineProcessor => (sourcefileName, destinationFileName) => 
     terminal: false,
   });
   const destDir = path.dirname(destinationFileName);
-  if (!fs.existsSync(destDir)) {
-    fs.mkdirSync(destDir);
-  }
+  makeDirIfNotExists(destDir);
 
   rl.on('line', (line) => {
     fs.appendFileSync(destinationFileName, lineProcessor(line) + '\n');

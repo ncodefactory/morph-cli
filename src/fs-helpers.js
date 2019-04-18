@@ -16,9 +16,9 @@ const directoryIsEmpty = (directoryName) => {
   }
 };
 
-const makeDirIfNotExists = (direcotryName) => {
-  if (!directoryExists(direcotryName)) {
-    fs.mkdirSync(direcotryName, { recursive: true });
+const makeDirIfNotExists = (directoryName) => {
+  if (!directoryExists(directoryName)) {
+    fs.mkdirSync(directoryName, { recursive: true });
   }
 };
 
