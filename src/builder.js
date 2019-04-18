@@ -2,7 +2,7 @@ import fs from 'fs';
 import tar from 'tar';
 import tmp from 'tmp';
 import path from 'path';
-import { DateTime } from 'luxon';
+import moment from 'moment-timezone';
 import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor, { replaceAll } from './line-processor';
@@ -86,7 +86,7 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
     },
     { key: '$PATH_SEPARATOR$', value: isWin() ? `${path.sep}${path.sep}` : path.sep },
     { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
-    { key: '$CURRENT_TIMEZONE$', value: DateTime.zoneName },
+    { key: '$CURRENT_TIMEZONE$', value: moment.tz.guess() },
     { key: '$NAME$', value: appDetails.name },
     { key: '$NORMALIZED_NAME$', value: normalizeName(appDetails.name) },
   ];
