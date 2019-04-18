@@ -9,7 +9,7 @@ const supportedProjectTypes = [
   { name: 'module', desc: 'npm module' },
   { name: 'component', desc: 'react app component' },
   { name: 'cli', desc: 'command line interface app' },
-  // { name: 'webapi', desc: 'web api serwer or web app backend layer' },
+  { name: 'webapi', desc: 'web api serwer or web app backend layer' },
   // { name: 'webapp', desc: 'react app' },
 ];
 

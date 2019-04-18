@@ -2,7 +2,7 @@ import fs from 'fs';
 import tar from 'tar';
 import tmp from 'tmp';
 import path from 'path';
-import { DateTime } from "luxon";
+import { DateTime } from 'luxon';
 import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor, { replaceAll } from './line-processor';
@@ -74,11 +74,7 @@ const extractTemplate = (templateFileName, destDir, replaceDictionary, skipFileN
   });
 };
 
-const normalizeName = name=>{
-  return name.length && name[0] === '@'
-  ? appDetails.name.slice(1)
-  : appDetails.name
-}
+const normalizeName = name => (name.length && name[0] === '@' ? name.slice(1) : name);
 
 const buildReplaceDictionary = async (type, projectDir, name) => {
   const appDetails = await askAppName(name);
@@ -136,9 +132,15 @@ const writeSummary = (type, dir, replaceDictionary) => {
   );
   console.log('\tInside that directory, you can run several commands:');
   console.log('');
-  if (type === 'empty') {
+  if (type === 'empty' || type === 'webapi') {
     console.log('\t\tnpm run start');
     console.log('\t\t\tStarts the application');
+    console.log('');
+  }
+
+  if (type === 'component') {
+    console.log('\t\tnpm run start');
+    console.log('\t\t\tStarts the test application with component preview');
     console.log('');
   }
 
@@ -161,12 +163,24 @@ const writeSummary = (type, dir, replaceDictionary) => {
   console.log('');
   console.log('\t\tnpm run upgrade');
   console.log('\t\t\tUpgrades dependencies to the latest verisons');
+
+  if (type === 'webapi' || type === 'webapp') {
+    console.log('');
+    console.log('\t\tnpm run docker-build');
+    console.log('\t\t\tBuilds docker image for this app (docker required)');
+    console.log('');
+    console.log('\t\tnpm run docker-run');
+    console.log(
+      '\t\t\tRun docker container from image builded with npm run docker-build command (docker required)',
+    );
+  }
+
   console.log('');
   console.log('\tWe suggest that you begin by typing:');
   console.log('');
   console.log(`\t\tcd ${relativeDir}`);
   console.log('\t\tnpm install');
-  if (type === 'empty' || type === 'component') {
+  if (type === 'empty' || type === 'component' || type === 'webapi' || type === 'webapp') {
     console.log('\t\tnpm run start');
   }
 
