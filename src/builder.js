@@ -2,6 +2,7 @@ import fs from 'fs';
 import tar from 'tar';
 import tmp from 'tmp';
 import path from 'path';
+import { DateTime } from "luxon";
 import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor, { replaceAll } from './line-processor';
@@ -73,6 +74,12 @@ const extractTemplate = (templateFileName, destDir, replaceDictionary, skipFileN
   });
 };
 
+const normalizeName = name=>{
+  return name.length && name[0] === '@'
+  ? appDetails.name.slice(1)
+  : appDetails.name
+}
+
 const buildReplaceDictionary = async (type, projectDir, name) => {
   const appDetails = await askAppName(name);
   const result = [
@@ -83,7 +90,9 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
     },
     { key: '$PATH_SEPARATOR$', value: isWin() ? `${path.sep}${path.sep}` : path.sep },
     { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
+    { key: '$CURRENT_TIMEZONE$', value: DateTime.zoneName },
     { key: '$NAME$', value: appDetails.name },
+    { key: '$NORMALIZED_NAME$', value: normalizeName(appDetails.name) },
   ];
 
   if (type === 'cli') {
