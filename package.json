@@ -21,7 +21,7 @@
     "start": "node --require @babel/register src/app.js",
     "test": "mocha --reporter mochawesome --reporter-options reportDir=test-results src/**/*spec.js --require @babel/register --recursive",
     "test:watch": "npm run test -- --watch",
-    "prepare": "shx rm -rf dist && cross-env NODE_ENV=production babel src --out-dir dist --ignore '**/*.spec.js' --ignore 'src/app.js' && cp -r --force assets/templates/ dist/templates",
+    "prepare": "shx rm -rf dist && cross-env NODE_ENV=production babel src --out-dir dist --ignore '**/*.spec.js' --ignore 'src/app.js'&& shx mkdir -p dist/templates && shx cp assets/templates/*.tar.gz dist/templates",
     "upgrade": "npm i -g npm-check-updates && ncu -u && npm install",
     "add": "npm run prepare && npm install -g",
     "remove": "npm remove -g"
