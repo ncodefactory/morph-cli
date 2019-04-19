@@ -31,8 +31,6 @@ const endsWithAny = (text, anyStrings) => {
   return false;
 };
 
-const nodeEnvIsDebug = () => process.env.NODE_ENV !== 'production';
-
 const extractTemplate = (templateFileName, destDir, replaceDictionary, skipFileNames) => {
   if (!fs.existsSync(templateFileName)) {
     throw new Error(`Project template file not found ${templateFileName}`);
@@ -184,6 +182,14 @@ const writeSummary = (type, dir, replaceDictionary) => {
     console.log('\t\tnpm run start');
   }
 
+  if (type === 'webapi' || type === 'webapp') {
+    console.log('');
+    console.log('\tor, if you want run this app in docker container:');
+    console.log('');
+    console.log('\t\tnpm run docker-build');
+    console.log('\t\tnpm run docker-run');
+  }
+
   if (type === 'module') {
     console.log('\t\tnpm run test');
   }
@@ -202,8 +208,7 @@ const writeSummary = (type, dir, replaceDictionary) => {
 
 const build = async (projectType, projectDir, projectName) => {
   const replaceDictionary = await buildReplaceDictionary(projectType, projectDir, projectName);
-  const templatesDir = nodeEnvIsDebug ? '../assets/templates' : 'templates';
-  const templateFileName = path.join(__dirname, templatesDir, `${projectType}.tar.gz`);
+  const templateFileName = path.join(__dirname, 'templates', `${projectType}.tar.gz`);
   console.log(); // eslint-disable-line no-console
   // eslint-disable-next-line no-console
   console.log(
