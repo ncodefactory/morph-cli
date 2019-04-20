@@ -5,6 +5,11 @@ const validateEmail = (email) => {
   return re.test(String(email).toLowerCase());
 };
 
+const validateConatiner = (container) => {
+  const re = /^[a-zA-Z][a-zA-Z0-9._-]*[a-zA-Z0-9]$/;
+  return re.test(String(container).toLowerCase());
+};
+
 const askAuthor = () => {
   const questions = [
     {
@@ -126,6 +131,28 @@ const askRepoDetails = (name) => {
   return inquirer.prompt(questions);
 };
 
+const askContainerDetails = (name) => {
+  if (validateConatiner(name)) {
+    return name.toLowerCase();
+  }
+
+  const questions = [
+    {
+      type: 'input',
+      name: 'containerName',
+      message: 'Docker container name',
+      validate(value) {
+        if (value.length && validateConatiner(value)) {
+          return true;
+        }
+
+        return 'Please enter a valid docker container name for application. Allowed [a-zA-Z0-9][a-zA-Z0-9_.-] only.';
+      },
+    },
+  ];
+  return inquirer.prompt(questions);
+};
+
 export {
   askAuthor,
   askAppName,
@@ -133,4 +160,5 @@ export {
   askAppDescription,
   askRepoDetails,
   askComponentDetails,
+  askContainerDetails,
 };

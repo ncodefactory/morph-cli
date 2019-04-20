@@ -13,6 +13,7 @@ import {
   askAuthor,
   askRepoDetails,
   askComponentDetails,
+  askContainerDetails,
 } from './inquirer';
 import { makeDirIfNotExists } from './fs-helpers';
 import { isWin } from './os-helpers';
@@ -88,6 +89,13 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
     { key: '$NAME$', value: appDetails.name },
     { key: '$NORMALIZED_NAME$', value: normalizeName(appDetails.name) },
   ];
+
+  if (type === 'webapi' || type === 'webapp') {
+    const containerDetails = await askContainerDetails(
+      result.find(item => item.key === '$NORMALIZED_NAME$').value,
+    );
+    result.push({ key: '$CONTAINER_NAME$', value: containerDetails.containerName });
+  }
 
   if (type === 'cli') {
     const binInfo = await askAppBinary();
