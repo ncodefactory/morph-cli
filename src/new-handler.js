@@ -10,7 +10,7 @@ const supportedProjectTypes = [
   { name: 'component', desc: 'react app component' },
   { name: 'cli', desc: 'command line interface app' },
   { name: 'webapi', desc: 'web api serwer or web app backend layer' },
-  // { name: 'webapp', desc: 'react app' },
+  { name: 'webapp', desc: 'react app' },
 ];
 
 const getCurrentDirectoryBase = () => path.basename(process.cwd());

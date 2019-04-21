@@ -194,6 +194,10 @@ const writeSummary = (type, dir, replaceDictionary) => {
     console.log('');
     console.log('\tor, if you want run this app in docker container:');
     console.log('');
+    if (type === 'webapp') {
+      console.log('\t\tnpm install');
+    }
+
     console.log('\t\tnpm run docker-build');
     console.log('\t\tnpm run docker-run');
   }
