@@ -69,5 +69,5 @@ test-results/
 # Prepared for npm's publish
 dist/
 
-# Npm install file
+# A manifestation of the manifest
 package-lock.json
