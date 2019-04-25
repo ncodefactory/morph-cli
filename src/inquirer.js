@@ -1,4 +1,7 @@
 import inquirer from 'inquirer';
+import os from 'os';
+
+const userName = os.userInfo().username;
 
 const validateEmail = (email) => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line no-useless-escape
@@ -16,6 +19,7 @@ const askAuthor = () => {
       type: 'input',
       name: 'authorName',
       message: 'Author name:',
+      default: userName,
       validate(value) {
         if (value.length) {
           return true;
@@ -28,6 +32,7 @@ const askAuthor = () => {
       type: 'input',
       name: 'authorEmail',
       message: 'Author e-mail:',
+      default: `${userName}@gmail.com`,
       validate(value) {
         if (value.length && validateEmail(value)) {
           return true;

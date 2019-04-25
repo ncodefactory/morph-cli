@@ -76,7 +76,7 @@ const extractTemplate = (templateFileName, destDir, replaceDictionary, skipFileN
 const normalizeName = name => (name.length && name[0] === '@' ? name.slice(1) : name);
 
 const buildReplaceDictionary = async (type, projectDir, name) => {
-  const appDetails = await askAppName(name);
+  const appDetails = await askAppName(name || path.basename(projectDir));
   const result = [
     { key: '$DIRECTORY_NAME$', value: projectDir },
     {
