@@ -32,7 +32,37 @@ const endsWithAny = (text, anyStrings) => {
   return false;
 };
 
-const extractTemplate = (templateFileName, destDir, replaceDictionary, skipFileNames) => {
+const packagePostProcessor = (packageFileName) => {
+  let buildedPackage;
+
+  if (!fs.existsSync(packageFileName)) {
+    return;
+  }
+
+  try {
+    buildedPackage = JSON.parse(fs.readFileSync(packageFileName));
+    if (buildedPackage.repository.url === '') {
+      delete buildedPackage.repository;
+    }
+
+    if (buildedPackage.author.email === '') {
+      delete buildedPackage.author;
+    }
+
+    fs.writeFileSync(packageFileName, JSON.stringify(buildedPackage, null, 2));
+  } catch (error) {
+    // eslint-disable-next-line no-console
+    console.log(error);
+  }
+};
+
+const extractTemplate = (
+  templateFileName,
+  destDir,
+  replaceDictionary,
+  skipFileNames,
+  postProcessors,
+) => {
   if (!fs.existsSync(templateFileName)) {
     throw new Error(`Project template file not found ${templateFileName}`);
   }
@@ -61,7 +91,11 @@ const extractTemplate = (templateFileName, destDir, replaceDictionary, skipFileN
               makeDirIfNotExists(path.dirname(destFile));
               fs.copyFileSync(file, destFile);
             } else {
-              processor(file, destFile);
+              processor(file, destFile, (fileName) => {
+                postProcessors
+                  .filter(postProc => postProc.fileName === fileName)
+                  .forEach(postProc => postProc.postProcessor(postProc.fileName));
+              });
             }
           });
         });
@@ -110,12 +144,7 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
   if (type !== 'empty') {
     const appDescription = await askAppDescription(appDetails.name, type);
     const authorInfo = await askAuthor();
-    const defaultRepoUrl = `https://github.com/${
-      appDetails.name.length && appDetails.name[0] === '@'
-        ? appDetails.name.slice(1)
-        : appDetails.name
-    }`;
-    const repoDetails = await askRepoDetails(defaultRepoUrl);
+    const repoDetails = await askRepoDetails();
     result.push(
       { key: '$DESCRIPTION$', value: appDescription.description },
       { key: '$AUTHOR_EMAIL$', value: authorInfo.authorEmail },
@@ -233,7 +262,9 @@ const build = async (projectType, projectDir, projectName) => {
     skipFileNames.push('favicon.ico');
   }
 
-  extractTemplate(templateFileName, projectDir, replaceDictionary, skipFileNames);
+  extractTemplate(templateFileName, projectDir, replaceDictionary, skipFileNames, [
+    { fileName: path.join(projectDir, 'package.json'), postProcessor: packagePostProcessor },
+  ]);
   writeSummary(projectType, projectDir, replaceDictionary);
 };
 
