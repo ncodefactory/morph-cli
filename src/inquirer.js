@@ -32,13 +32,16 @@ const askAuthor = () => {
       type: 'input',
       name: 'authorEmail',
       message: 'Author e-mail:',
-      default: `${userName}@gmail.com`,
       validate(value) {
-        if (value.length && validateEmail(value)) {
-          return true;
+        if (value.length) {
+          if (validateEmail(value)) {
+            return true;
+          }
+
+          return 'Please enter a valid e-mail of the author of application.';
         }
 
-        return 'Please enter a valid e-mail of the author of application.';
+        return true;
       },
     },
   ];
@@ -118,18 +121,14 @@ const askAppDescription = (name, type) => {
   return inquirer.prompt(questions);
 };
 
-const askRepoDetails = (name) => {
+const askRepoDetails = () => {
   const questions = [
     {
       type: 'input',
       name: 'repoUrl',
       message: 'Repo url:',
-      default: name,
-      validate(value) {
-        if (value.length) {
-          return true;
-        }
-        return 'Please enter url of git repository for application.';
+      validate() {
+        return true;
       },
     },
   ];
