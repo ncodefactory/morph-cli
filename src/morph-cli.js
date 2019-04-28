@@ -1,3 +1,4 @@
+/* eslint-disable no-console */
 import program from 'commander';
 import { name, version, description } from '../package.json';
 import newHandler, { supportedProjectTypes } from './new-handler';
@@ -21,15 +22,15 @@ const run = async () => {
       try {
         await newHandler(projectType, options.dirName, options.force);
       } catch (error) {
-        console.log(`error: ${error.message}`); // eslint-disable-line no-console
+        console.log(`error: ${error.message}`);
       }
     })
     .on('--help', () => {
-      console.log(''); // eslint-disable-line no-console
-      console.log('Available project types:'); // eslint-disable-line no-console
+      console.log('');
+      console.log('Available project types:');
       supportedProjectTypes.forEach((value) => {
         const formattedName = value.name + ' '.repeat(9 - value.name.length);
-        console.log(`  ${formattedName} - ${value.desc}`); // eslint-disable-line no-console
+        console.log(`  ${formattedName} - ${value.desc}`);
       });
     });
 
@@ -40,7 +41,7 @@ const run = async () => {
       try {
         showModuleBanner(false);
       } catch (error) {
-        console.log(`error: ${error.message}`); // eslint-disable-line no-console
+        console.log(`error: ${error.message}`);
       }
     });
 

@@ -1,9 +1,10 @@
+/* eslint-disable no-console */
 import fs from 'fs';
 import tar from 'tar';
 import tmp from 'tmp';
 import path from 'path';
 import moment from 'moment-timezone';
-import recursive from 'recursive-readdir';
+import recursive from 'linebyline';
 import fileProcessor from './file-processor';
 import lineProcessor, { replaceAll } from './line-processor';
 import {
@@ -16,7 +17,8 @@ import {
   askContainerDetails,
 } from './inquirer';
 import { makeDirIfNotExists } from './fs-helpers';
-import { isWin } from './os-helpers';
+
+const isWin = () => process.platform === 'win32';
 
 const endsWithAny = (text, anyStrings) => {
   if (anyStrings == null) {
@@ -51,7 +53,6 @@ const packagePostProcessor = (packageFileName) => {
 
     fs.writeFileSync(packageFileName, JSON.stringify(buildedPackage, null, 2));
   } catch (error) {
-    // eslint-disable-next-line no-console
     console.log(error);
   }
 };
@@ -156,7 +157,6 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
   return result;
 };
 
-/* eslint-disable no-console */
 const writeSummary = (type, dir, replaceDictionary) => {
   const relativeDir = path.relative(process.cwd(), dir);
   console.log('');
@@ -245,18 +245,16 @@ const writeSummary = (type, dir, replaceDictionary) => {
   console.log('\tHappy hacking!');
   console.log('');
 };
-/* eslint-enable no-console */
 
 const build = async (projectType, projectDir, projectName) => {
   const replaceDictionary = await buildReplaceDictionary(projectType, projectDir, projectName);
   const templateFileName = path.join(__dirname, 'templates', `${projectType}.tar.gz`);
-  console.log(); // eslint-disable-line no-console
-  // eslint-disable-next-line no-console
+  console.log();
   console.log(
     `building a project ${
       replaceDictionary.find(item => item.key === '$NAME$').value
     }, please wait...`,
-  ); // eslint-disable-line no-console
+  );
   const skipFileNames = [];
   if (projectType === 'component') {
     skipFileNames.push('favicon.ico');

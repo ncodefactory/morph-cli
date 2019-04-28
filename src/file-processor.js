@@ -23,7 +23,7 @@ const fileProcessor = lineProcessor => (sourcefileName, destinationFileName, clo
   makeDirIfNotExists(destDir);
 
   rl.on('line', (line) => {
-    fs.appendFileSync(destinationFileName, lineProcessor(line) + '\n');
+    fs.appendFileSync(destinationFileName, `${lineProcessor(line)}\n`);
   });
   rl.on('close', () => {
     closeHandler(destinationFileName);

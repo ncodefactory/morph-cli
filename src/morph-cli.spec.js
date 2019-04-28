@@ -1,16 +1,17 @@
-import { expect } from 'chai';
+import { describe, it } from 'mocha';
+import assert from 'assert';
 import { name, version } from '../package.json';
 import { moduleName, moduleVersion } from './morph-cli';
 
 describe(name, () => {
   describe('moduleVersion', () => {
     it('is correct', () => {
-      expect(moduleVersion).to.equal(version);
+      assert.equal(moduleVersion, version);
     });
   });
   describe('moduleName', () => {
     it('is correct', () => {
-      expect(moduleName).to.equal(name);
+      assert.equal(moduleName, name.split('/')[1]);
     });
   });
 });

@@ -1,4 +1,5 @@
 # morph-cli
+
 Command line interface for **Morph** development framework.
 
 ## installation:
@@ -18,4 +19,3 @@ yarn global add @ncodefactory/morph-cli
 ## usage:
 
 After installation type **mo --help** for help
-

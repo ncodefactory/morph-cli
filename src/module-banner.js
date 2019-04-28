@@ -14,7 +14,8 @@ const showModuleBanner = (clrscr = true) => {
     clear();
   }
 
-  console.log(moduleBanner); // eslint-disable-line no-console
+  // eslint-disable-next-line no-console
+  console.log(moduleBanner);
 };
 
 export default showModuleBanner;
