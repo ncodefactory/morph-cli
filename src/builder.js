@@ -4,7 +4,7 @@ import tar from 'tar';
 import tmp from 'tmp';
 import path from 'path';
 import moment from 'moment-timezone';
-import recursive from 'linebyline';
+import recursive from 'recursive-readdir';
 import fileProcessor from './file-processor';
 import lineProcessor, { replaceAll } from './line-processor';
 import {
@@ -43,11 +43,11 @@ const packagePostProcessor = (packageFileName) => {
 
   try {
     buildedPackage = JSON.parse(fs.readFileSync(packageFileName));
-    if (buildedPackage.repository.url === '') {
+    if (buildedPackage.repository && buildedPackage.repository.url === '') {
       delete buildedPackage.repository;
     }
 
-    if (buildedPackage.author.email === '') {
+    if (buildedPackage.author && buildedPackage.author.email === '') {
       delete buildedPackage.author;
     }
 
