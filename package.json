@@ -16,7 +16,7 @@
     "mo": "./dist/index.js"
   },
   "scripts": {
-    "compile": "babel src --out-dir .compiled --source-maps",
+    "compile": "shx rm -rf .compiled && babel src --out-dir .compiled --source-maps",
     "start": "node --require @babel/register src/app.js",
     "test": "mocha --reporter mochawesome --reporter-options reportDir=test-results src/**/*spec.js --require @babel/register --recursive",
     "prepare": "shx rm -rf dist && cross-env NODE_ENV=production babel src --out-dir dist --ignore '**/*.spec.js' --ignore 'src/app.js' && shx mkdir -p dist/templates && shx cp assets/templates/*.tar.gz dist/templates",

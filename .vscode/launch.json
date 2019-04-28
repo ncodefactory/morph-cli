@@ -9,24 +9,22 @@
       "request": "launch",
       "name": "DEBUG Whole Application (app.js)",
       "program": "${workspaceRoot}/src/app.js",
-      "outFiles": [
-        "${workspaceRoot}/.compiled/**/*.js"
-      ],
+      "outFiles": ["${workspaceRoot}/.compiled/**/*.js"],
       "internalConsoleOptions": "openOnSessionStart",
       "runtimeExecutable": "node",
       "preLaunchTask": "compile",
+      "sourceMaps": true
     },
     {
       "type": "node",
       "request": "launch",
       "name": "DEBUG Current JS File (no test)",
       "program": "${file}",
-      "outFiles": [
-        "${workspaceRoot}/.compiled/**/*.js"
-      ],
+      "outFiles": ["${workspaceRoot}/.compiled/**/*.js"],
       "internalConsoleOptions": "openOnSessionStart",
       "runtimeExecutable": "node",
-      "preLaunchTask": "compile"
+      "preLaunchTask": "compile",
+      "sourceMaps": true
     },
     {
       "name": "DEBUG All Tests",
@@ -44,34 +42,23 @@
         "--colors",
         "${workspaceRoot}/.compiled/**/*.spec.js"
       ],
-      "runtimeArgs": [
-        "--nolazy"
-      ],
+      "runtimeArgs": ["--nolazy"],
       "sourceMaps": true,
-      "outFiles": [
-        "${workspaceRoot}/.compiled/**/*.js"
-      ],
+      "outFiles": ["${workspaceRoot}/.compiled/**/*.js"],
       "internalConsoleOptions": "openOnSessionStart",
-      "preLaunchTask": "compile",
+      "preLaunchTask": "compile"
     },
     {
       "name": "RUN Current Test File (without debugging)",
       "type": "node",
       "request": "launch",
       "program": "${workspaceRoot}/node_modules/mocha/bin/_mocha",
-      "args": [
-        "--require",
-        "@babel/register",
-        "--colors",
-        "${relativeFile}"
-      ],
+      "args": ["--require", "@babel/register", "--colors", "${relativeFile}"],
       "cwd": "${workspaceRoot}",
       "protocol": "inspector",
       "internalConsoleOptions": "openOnSessionStart",
       "sourceMaps": true,
-      "outFiles": [
-        "${workspaceRoot}/.compiled/**/*.js"
-      ]
+      "outFiles": ["${workspaceRoot}/.compiled/**/*.js"]
     }
   ]
 }
