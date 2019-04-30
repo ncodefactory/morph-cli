@@ -136,7 +136,7 @@ const askRepoDetails = () => {
 };
 
 const askContainerDetails = (name) => {
-  if (validateConatiner(name)) {
+  if (name.lenght && validateConatiner(name)) {
     return name.toLowerCase();
   }
 
