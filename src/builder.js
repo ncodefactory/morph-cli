@@ -195,9 +195,6 @@ const writeSummary = (type, dir, replaceDictionary) => {
   console.log(
     '\t\t\tCreates transpiled versions of source files with source maps (required for debugging)',
   );
-  console.log('');
-  console.log('\t\tnpm run upgrade');
-  console.log('\t\t\tUpgrades dependencies to the latest verisons');
 
   if (type === 'webapi' || type === 'webapp') {
     console.log('');
