@@ -220,6 +220,7 @@ const writeSummary = (type, dir, replaceDictionary) => {
     console.log('');
     console.log('\tor, if you want run this app in docker container:');
     console.log('');
+    console.log(`\t\tcd ${relativeDir}`);
     if (type === 'webapp') {
       console.log('\t\tnpm install');
     }
