@@ -136,10 +136,6 @@ const askRepoDetails = () => {
 };
 
 const askContainerDetails = (name) => {
-  if (name.lenght && validateConatiner(name)) {
-    return name.toLowerCase();
-  }
-
   const questions = [
     {
       type: 'input',
@@ -154,6 +150,10 @@ const askContainerDetails = (name) => {
       },
     },
   ];
+  if (name.length && validateConatiner(name)) {
+    questions[0].default = name;
+  }
+
   return inquirer.prompt(questions);
 };
 
