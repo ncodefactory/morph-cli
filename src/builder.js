@@ -254,7 +254,7 @@ const build = async (projectType, projectDir, projectName) => {
     }, please wait...`,
   );
   const skipFileNames = [];
-  if (projectType === 'component') {
+  if (projectType === 'component' || projectType === 'webapp') {
     skipFileNames.push('favicon.ico');
   }
 
