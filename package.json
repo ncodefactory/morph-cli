@@ -1,7 +1,7 @@
 {
   "name": "@ncodefactory/morph-cli",
   "description": "command-line interface for morph dvelopment env",
-  "version": "3.0.8",
+  "version": "3.0.9",
   "private": false,
   "license": "MIT",
   "author": {
