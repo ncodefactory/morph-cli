@@ -245,13 +245,10 @@ const writeWebAppAvailableCommands = () => {
 };
 const writeDesktopAvailableCommands = () => {
   console.log(summaryStrings.npm_run_start);
-  console.log('\t\t\tStarts the hosted react app in browser (for debug renderer process)');
+  console.log('\t\t\tStarts the application in development mode (electron with devtools)');
   console.log('');
   console.log(summaryStrings.npm_run_test);
   console.log(summaryStrings.npm_run_test_desc);
-  console.log('');
-  console.log('\t\tnpm run dev');
-  console.log('\t\t\tStarts the application in development mode (electron with devtools)');
   console.log('');
   console.log('\t\tnpm run pack');
   console.log('\t\t\tBuilds application package for deployment');
@@ -292,7 +289,7 @@ const writeWebAppSuggestCommands = (relativeDir) => {
   console.log(summaryStrings.npm_run_docker_run);
 };
 const writeDesktopSuggestCommands = () => {
-  console.log('\t\tnpm run dev');
+  console.log(summaryStrings.npm_run_start);
 };
 
 const writeSummary = (type, dir, replaceDictionary) => {
