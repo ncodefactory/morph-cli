@@ -157,6 +157,144 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
   return result;
 };
 
+const summaryStrings = {
+  npm_install: '\t\tnpm install',
+  npm_run_start: '\t\tnpm run start',
+  npm_run_start_desc: '\t\t\tStarts the application',
+  npm_run_test: '\t\tnpm run test',
+  npm_run_test_desc: '\t\t\tRuns the unit tests',
+  npm_run_compile: '\t\tnpm run compile',
+  npm_run_compile_desc:
+    '\t\t\tCreates transpiled versions of source files with source maps (required for debugging)',
+  npm_run_docker_build: '\t\tnpm run docker-build',
+  npm_run_docker_build_desc: '\t\t\tBuilds docker image for this app (docker required)',
+  npm_run_docker_run: '\t\tnpm run docker-run',
+  npm_run_docker_run_desc:
+    '\t\t\tRun docker container from image builded with npm run docker-build command (docker required)',
+  or_if_you_want_docker: '\tor, if you want run this app in docker container:',
+};
+
+const writeEmptyAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+  console.log(summaryStrings.npm_run_start);
+  console.log('');
+  console.log(summaryStrings.npm_run_test);
+  console.log(summaryStrings.npm_run_test_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_compile);
+  console.log(summaryStrings.npm_run_compile_desc);
+};
+const writeModuleAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_test);
+  console.log(summaryStrings.npm_run_test_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_compile);
+  console.log(summaryStrings.npm_run_compile_desc);
+};
+const writeComponentAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+  console.log(`\t\t\t${summaryStrings.npm_run_start} with component preview`);
+  console.log('');
+  console.log(summaryStrings.npm_run_test);
+  console.log(summaryStrings.npm_run_test_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_compile);
+  console.log(summaryStrings.npm_run_compile_desc);
+};
+const writeCliAvailableCommands = () => {
+  console.log('\t\tnpm run add');
+  console.log('\t\t\tInstalls the application for tests');
+  console.log('');
+  console.log('\t\tnpm run remove');
+  console.log('\t\t\tUninstalls the application from tests');
+  console.log('');
+  console.log(summaryStrings.npm_run_test);
+  console.log(summaryStrings.npm_run_test_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_compile);
+  console.log(summaryStrings.npm_run_compile_desc);
+};
+const writeWebApiAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+  console.log(summaryStrings.npm_run_start);
+  console.log('');
+  console.log(summaryStrings.npm_run_test);
+  console.log(summaryStrings.npm_run_test_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_compile);
+  console.log(summaryStrings.npm_run_compile_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_docker_build);
+  console.log(summaryStrings.npm_run_docker_build_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_docker_run);
+  console.log(summaryStrings.npm_run_docker_run_desc);
+};
+const writeWebAppAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_test);
+  console.log(summaryStrings.npm_run_test_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_compile);
+  console.log(summaryStrings.npm_run_compile_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_docker_build);
+  console.log(summaryStrings.npm_run_docker_build_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_docker_run);
+  console.log(summaryStrings.npm_run_docker_run_desc);
+};
+const writeDesktopAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+  console.log('\t\t\tStarts the hosted react app in browser (for debug renderer process)');
+  console.log('');
+  console.log(summaryStrings.npm_run_test);
+  console.log(summaryStrings.npm_run_test_desc);
+  console.log('');
+  console.log('\t\tnpm run dev');
+  console.log('\t\t\tStarts the application in development mode (electron with devtools)');
+  console.log('');
+  console.log('\t\tnpm run pack');
+  console.log('\t\t\tBuilds application package for deployment');
+};
+
+const writeEmptySuggestCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+};
+const writeModuleSuggestCommands = () => {
+  console.log(summaryStrings.npm_run_test);
+};
+const writeComponentSuggestCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+};
+const writeCliSuggestCommands = (binCommandText) => {
+  console.log('\t\tnpm run add');
+  console.log(`\t\t${binCommandText}`);
+  console.log('\t\tnpm run remove');
+};
+const writeWebApiSuggestCommands = (relativeDir) => {
+  console.log(summaryStrings.npm_run_start);
+  console.log('');
+  console.log(summaryStrings.or_if_you_want_docker);
+  console.log('');
+  console.log(`\t\tcd ${relativeDir}`);
+  console.log(summaryStrings.npm_install);
+  console.log(summaryStrings.npm_run_docker_build);
+  console.log(summaryStrings.npm_run_docker_run);
+};
+const writeWebAppSuggestCommands = (relativeDir) => {
+  console.log(summaryStrings.npm_run_start);
+  console.log('');
+  console.log(summaryStrings.or_if_you_want_docker);
+  console.log('');
+  console.log(`\t\tcd ${relativeDir}`);
+  console.log(summaryStrings.npm_install);
+  console.log(summaryStrings.npm_run_docker_build);
+  console.log(summaryStrings.npm_run_docker_run);
+};
+const writeDesktopSuggestCommands = () => {
+  console.log('\t\tnpm run dev');
+};
+
 const writeSummary = (type, dir, replaceDictionary) => {
   const relativeDir = path.relative(process.cwd(), dir);
   console.log('');
@@ -167,74 +305,63 @@ const writeSummary = (type, dir, replaceDictionary) => {
   );
   console.log('\tInside that directory, you can run several commands:');
   console.log('');
-  if (type === 'empty' || type === 'webapi') {
-    console.log('\t\tnpm run start');
-    console.log('\t\t\tStarts the application');
-    console.log('');
-  }
 
-  if (type === 'component') {
-    console.log('\t\tnpm run start');
-    console.log('\t\t\tStarts the test application with component preview');
-    console.log('');
-  }
-
-  if (type === 'cli') {
-    console.log('\t\tnpm run add');
-    console.log('\t\t\tInstalls the application for tests');
-    console.log('');
-    console.log('\t\tnpm run remove');
-    console.log('\t\t\tUninstalls the application from tests');
-    console.log('');
-  }
-
-  console.log('\t\tnpm run test');
-  console.log('\t\t\tRuns the unit tests');
-  console.log('');
-  console.log('\t\tnpm run compile');
-  console.log(
-    '\t\t\tCreates transpiled versions of source files with source maps (required for debugging)',
-  );
-
-  if (type === 'webapi' || type === 'webapp') {
-    console.log('');
-    console.log('\t\tnpm run docker-build');
-    console.log('\t\t\tBuilds docker image for this app (docker required)');
-    console.log('');
-    console.log('\t\tnpm run docker-run');
-    console.log(
-      '\t\t\tRun docker container from image builded with npm run docker-build command (docker required)',
-    );
+  switch (type) {
+    case 'empty':
+      writeEmptyAvailableCommands();
+      break;
+    case 'module':
+      writeModuleAvailableCommands();
+      break;
+    case 'component':
+      writeComponentAvailableCommands();
+      break;
+    case 'cli':
+      writeCliAvailableCommands();
+      break;
+    case 'webapi':
+      writeWebApiAvailableCommands();
+      break;
+    case 'webapp':
+      writeWebAppAvailableCommands();
+      break;
+    case 'desktop':
+      writeDesktopAvailableCommands();
+      break;
+    default:
+      break;
   }
 
   console.log('');
   console.log('\tWe suggest that you begin by typing:');
   console.log('');
   console.log(`\t\tcd ${relativeDir}`);
-  console.log('\t\tnpm install');
-  if (type === 'empty' || type === 'component' || type === 'webapi' || type === 'webapp') {
-    console.log('\t\tnpm run start');
-  }
+  console.log(summaryStrings.npm_install);
 
-  if (type === 'webapi' || type === 'webapp') {
-    console.log('');
-    console.log('\tor, if you want run this app in docker container:');
-    console.log('');
-    console.log(`\t\tcd ${relativeDir}`);
-    console.log('\t\tnpm install');
-
-    console.log('\t\tnpm run docker-build');
-    console.log('\t\tnpm run docker-run');
-  }
-
-  if (type === 'module') {
-    console.log('\t\tnpm run test');
-  }
-
-  if (type === 'cli') {
-    console.log('\t\tnpm run add');
-    console.log(`\t\t${replaceDictionary.find(item => item.key === '$BIN$').value}`);
-    console.log('\t\tnpm run remove');
+  switch (type) {
+    case 'empty':
+      writeEmptySuggestCommands();
+      break;
+    case 'module':
+      writeModuleSuggestCommands();
+      break;
+    case 'component':
+      writeComponentSuggestCommands();
+      break;
+    case 'cli':
+      writeCliSuggestCommands(replaceDictionary.find(item => item.key === '$BIN$').value);
+      break;
+    case 'webapi':
+      writeWebApiSuggestCommands(relativeDir);
+      break;
+    case 'webapp':
+      writeWebAppSuggestCommands(relativeDir);
+      break;
+    case 'desktop':
+      writeDesktopSuggestCommands();
+      break;
+    default:
+      break;
   }
 
   console.log('');
@@ -252,7 +379,7 @@ const build = async (projectType, projectDir, projectName) => {
     }, please wait...`,
   );
   const skipFileNames = [];
-  if (projectType === 'component' || projectType === 'webapp') {
+  if (projectType === 'component' || projectType === 'webapp' || projectType === 'desktop') {
     skipFileNames.push('favicon.ico');
   }
 
