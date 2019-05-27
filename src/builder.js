@@ -20,13 +20,16 @@ import { makeDirIfNotExists } from './fs-helpers';
 
 const isWin = () => process.platform === 'win32';
 
-const endsWithAny = (text, anyStrings) => {
+const endsWithAny = (text, anyStrings, nocharcase = false) => {
   if (anyStrings == null) {
     return false;
   }
 
-  for (let i = 0; i < anyStrings.length; i = +1) {
-    if (text.endsWith(anyStrings[i])) {
+  for (let i = 0; i < anyStrings.length; i += 1) {
+    const endsWith = nocharcase
+      ? text.toUpperCase().endsWith(anyStrings[i].toUpperCase())
+      : text.endsWith(anyStrings[i]);
+    if (endsWith) {
       return true;
     }
   }
@@ -88,7 +91,7 @@ const extractTemplate = (
           const processor = fileProcessor(lineProcessor(replaceDictionary));
           files.forEach((file) => {
             const destFile = file.replace(tmpDir, destDir);
-            if (endsWithAny(file, skipFileNames)) {
+            if (endsWithAny(file, skipFileNames, true)) {
               makeDirIfNotExists(path.dirname(destFile));
               fs.copyFileSync(file, destFile);
             } else {
@@ -378,6 +381,10 @@ const build = async (projectType, projectDir, projectName) => {
   const skipFileNames = [];
   if (projectType === 'component' || projectType === 'webapp' || projectType === 'desktop') {
     skipFileNames.push('favicon.ico');
+  }
+
+  if (projectType === 'desktop') {
+    skipFileNames.push('.png', '.ico', '.icns');
   }
 
   extractTemplate(templateFileName, projectDir, replaceDictionary, skipFileNames, [
