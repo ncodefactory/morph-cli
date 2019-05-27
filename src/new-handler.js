@@ -11,7 +11,7 @@ const supportedProjectTypes = [
   { name: 'cli', desc: 'command line interface app' },
   { name: 'webapi', desc: 'web api serwer or web app backend layer' },
   { name: 'webapp', desc: 'react app' },
-  { name: 'desktop', desc: 'react app hosted on electron (preview)' },
+  { name: 'desktop', desc: 'react app hosted on electron' },
 ];
 
 const getCurrentDirectoryBase = () => path.basename(process.cwd());
