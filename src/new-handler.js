@@ -11,6 +11,7 @@ const supportedProjectTypes = [
   { name: 'cli', desc: 'command line interface app' },
   { name: 'webapi', desc: 'web api serwer or web app backend layer' },
   { name: 'webapp', desc: 'react app' },
+  { name: 'webdashboard', desc: 'react app with materal-ui dasborad layout' },
   { name: 'desktop', desc: 'react app hosted on electron' },
 ];
 

@@ -29,7 +29,7 @@ const run = async () => {
       console.log('');
       console.log('Available project types:');
       supportedProjectTypes.forEach((value) => {
-        const formattedName = value.name + ' '.repeat(9 - value.name.length);
+        const formattedName = value.name + ' '.repeat(12 - value.name.length);
         console.log(`  ${formattedName} - ${value.desc}`);
       });
     });
