@@ -128,7 +128,7 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
     { key: '$NORMALIZED_NAME$', value: normalizeName(appDetails.name) },
   ];
 
-  if (type === 'webapi' || type === 'webapp') {
+  if (type === 'webapi' || type === 'webapp' || type === 'webdashboard') {
     const containerDetails = await askContainerDetails(
       result.find(item => item.key === '$NORMALIZED_NAME$').value,
     );
@@ -246,6 +246,19 @@ const writeWebAppAvailableCommands = () => {
   console.log(summaryStrings.npm_run_docker_run);
   console.log(summaryStrings.npm_run_docker_run_desc);
 };
+const writeWebDashboardAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_test);
+  console.log(summaryStrings.npm_run_test_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_compile);
+  console.log(summaryStrings.npm_run_compile_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_docker_build);
+  console.log(summaryStrings.npm_run_docker_build_desc);
+  console.log('');
+  console.log(summaryStrings.npm_run_docker_run);
+  console.log(summaryStrings.npm_run_docker_run_desc);
+};
 const writeDesktopAvailableCommands = () => {
   console.log(summaryStrings.npm_run_start);
   console.log('\t\t\tStarts the application in development mode (electron with devtools)');
@@ -291,6 +304,16 @@ const writeWebAppSuggestCommands = (relativeDir) => {
   console.log(summaryStrings.npm_run_docker_build);
   console.log(summaryStrings.npm_run_docker_run);
 };
+const writeWebDashboardSuggestCommands = (relativeDir) => {
+  console.log(summaryStrings.npm_run_start);
+  console.log('');
+  console.log(summaryStrings.or_if_you_want_docker);
+  console.log('');
+  console.log(`\t\tcd ${relativeDir}`);
+  console.log(summaryStrings.npm_install);
+  console.log(summaryStrings.npm_run_docker_build);
+  console.log(summaryStrings.npm_run_docker_run);
+};
 const writeDesktopSuggestCommands = () => {
   console.log(summaryStrings.npm_run_start);
 };
@@ -325,6 +348,9 @@ const writeSummary = (type, dir, replaceDictionary) => {
     case 'webapp':
       writeWebAppAvailableCommands();
       break;
+    case 'webdashboard':
+      writeWebDashboardAvailableCommands();
+      break;
     case 'desktop':
       writeDesktopAvailableCommands();
       break;
@@ -356,6 +382,9 @@ const writeSummary = (type, dir, replaceDictionary) => {
       break;
     case 'webapp':
       writeWebAppSuggestCommands(relativeDir);
+      break;
+    case 'webdashboard':
+      writeWebDashboardSuggestCommands(relativeDir);
       break;
     case 'desktop':
       writeDesktopSuggestCommands();
