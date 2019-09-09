@@ -13,6 +13,7 @@ const supportedProjectTypes = [
   { name: 'webapp', desc: 'react app' },
   { name: 'webdashboard', desc: 'react app with materal-ui dasborad layout' },
   { name: 'desktop', desc: 'react app hosted on electron' },
+  { name: 'realtime', desc: 'client and server applications connected by websocket' },
 ];
 
 const getCurrentDirectoryBase = () => path.basename(process.cwd());

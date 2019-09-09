@@ -219,7 +219,7 @@ const writeCliAvailableCommands = () => {
 };
 const writeWebApiAvailableCommands = () => {
   console.log(summaryStrings.npm_run_start);
-  console.log(summaryStrings.npm_run_start);
+  console.log(summaryStrings.npm_run_start_desc);
   console.log('');
   console.log(summaryStrings.npm_run_test);
   console.log(summaryStrings.npm_run_test_desc);
@@ -234,6 +234,9 @@ const writeWebApiAvailableCommands = () => {
   console.log(summaryStrings.npm_run_docker_run_desc);
 };
 const writeWebAppAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+  console.log(summaryStrings.npm_run_start_desc);
+  console.log('');
   console.log(summaryStrings.npm_run_test);
   console.log(summaryStrings.npm_run_test_desc);
   console.log('');
@@ -247,6 +250,9 @@ const writeWebAppAvailableCommands = () => {
   console.log(summaryStrings.npm_run_docker_run_desc);
 };
 const writeWebDashboardAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+  console.log(summaryStrings.npm_run_start_desc);
+  console.log('');
   console.log(summaryStrings.npm_run_test);
   console.log(summaryStrings.npm_run_test_desc);
   console.log('');
@@ -268,6 +274,14 @@ const writeDesktopAvailableCommands = () => {
   console.log('');
   console.log('\t\tnpm run pack');
   console.log('\t\t\tBuilds application package for deployment');
+};
+
+const writeRealTimeAvailableCommands = () => {
+  console.log('\t\tIn server directory:');
+  writeWebApiAvailableCommands();
+  console.log('');
+  console.log('\t\tIn client directory:');
+  writeWebAppAvailableCommands();
 };
 
 const writeEmptySuggestCommands = () => {
@@ -321,12 +335,18 @@ const writeDesktopSuggestCommands = () => {
 const writeSummary = (type, dir, replaceDictionary) => {
   const relativeDir = path.relative(process.cwd(), dir);
   console.log('');
-  console.log(
-    `\tSuccess! Created ${
-      replaceDictionary.find(item => item.key === '$NAME$').value
-    } at ${relativeDir}`,
-  );
-  console.log('\tInside that directory, you can run several commands:');
+  if (type === 'realtime') {
+    console.log(`\tSuccess! Created server application at ${relativeDir}/server`);
+    console.log(`\tand client application at ${relativeDir}/client`);
+    console.log('\tInside these directories, you can run several commands:');
+  } else {
+    console.log(
+      `\tSuccess! Created ${
+        replaceDictionary.find(item => item.key === '$NAME$').value
+      } at ${relativeDir}`,
+    );
+    console.log('\tInside that directory, you can run several commands:');
+  }
   console.log('');
 
   switch (type) {
@@ -354,6 +374,9 @@ const writeSummary = (type, dir, replaceDictionary) => {
     case 'desktop':
       writeDesktopAvailableCommands();
       break;
+    case 'realtime':
+      writeRealTimeAvailableCommands();
+      break;
     default:
       break;
   }
@@ -361,8 +384,10 @@ const writeSummary = (type, dir, replaceDictionary) => {
   console.log('');
   console.log('\tWe suggest that you begin by typing:');
   console.log('');
-  console.log(`\t\tcd ${relativeDir}`);
-  console.log(summaryStrings.npm_install);
+  if (type !== 'realtime') {
+    console.log(`\t\tcd ${relativeDir}`);
+    console.log(summaryStrings.npm_install);
+  }
 
   switch (type) {
     case 'empty':
@@ -389,6 +414,15 @@ const writeSummary = (type, dir, replaceDictionary) => {
     case 'desktop':
       writeDesktopSuggestCommands();
       break;
+    case 'realtime':
+      console.log(`\t\tcd ${relativeDir}\\server`);
+      console.log(summaryStrings.npm_install);
+      console.log(summaryStrings.npm_run_start);
+      console.log('');
+      console.log(`\t\tcd ${relativeDir}\\client`);
+      console.log(summaryStrings.npm_install);
+      console.log(summaryStrings.npm_run_start);
+      break;
     default:
       break;
   }
@@ -408,7 +442,12 @@ const build = async (projectType, projectDir, projectName) => {
     }, please wait...`,
   );
   const skipFileNames = [];
-  if (projectType === 'component' || projectType === 'webapp' || projectType === 'desktop') {
+  if (
+    projectType === 'component'
+    || projectType === 'webapp'
+    || projectType === 'desktop'
+    || projectType === 'realtime'
+  ) {
     skipFileNames.push('favicon.ico');
   }
 
