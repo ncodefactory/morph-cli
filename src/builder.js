@@ -270,6 +270,14 @@ const writeDesktopAvailableCommands = () => {
   console.log('\t\t\tBuilds application package for deployment');
 };
 
+const writeRealTimeAvailableCommands = () => {
+  console.log('\t\tIn server directory:');
+  writeWebApiAvailableCommands();
+  console.log('');
+  console.log('\t\tIn client directory:');
+  writeWebAppAvailableCommands();
+};
+
 const writeEmptySuggestCommands = () => {
   console.log(summaryStrings.npm_run_start);
 };
@@ -317,16 +325,25 @@ const writeWebDashboardSuggestCommands = (relativeDir) => {
 const writeDesktopSuggestCommands = () => {
   console.log(summaryStrings.npm_run_start);
 };
+const writeRealTimeSuggestCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+};
 
 const writeSummary = (type, dir, replaceDictionary) => {
   const relativeDir = path.relative(process.cwd(), dir);
   console.log('');
-  console.log(
-    `\tSuccess! Created ${
-      replaceDictionary.find(item => item.key === '$NAME$').value
-    } at ${relativeDir}`,
-  );
-  console.log('\tInside that directory, you can run several commands:');
+  if (type === 'realtime') {
+    console.log(`\tSuccess! Created server application at ${relativeDir}/server`);
+    console.log(`\tand client application at ${relativeDir}/client`);
+    console.log('\tInside these directories, you can run several commands:');
+  } else {
+    console.log(
+      `\tSuccess! Created ${
+        replaceDictionary.find(item => item.key === '$NAME$').value
+      } at ${relativeDir}`,
+    );
+    console.log('\tInside that directory, you can run several commands:');
+  }
   console.log('');
 
   switch (type) {
@@ -354,6 +371,9 @@ const writeSummary = (type, dir, replaceDictionary) => {
     case 'desktop':
       writeDesktopAvailableCommands();
       break;
+    case 'realtime':
+      writeRealTimeAvailableCommands();
+      break;
     default:
       break;
   }
@@ -361,8 +381,10 @@ const writeSummary = (type, dir, replaceDictionary) => {
   console.log('');
   console.log('\tWe suggest that you begin by typing:');
   console.log('');
-  console.log(`\t\tcd ${relativeDir}`);
-  console.log(summaryStrings.npm_install);
+  if (type !== 'realtime') {
+    console.log(`\t\tcd ${relativeDir}`);
+    console.log(summaryStrings.npm_install);
+  }
 
   switch (type) {
     case 'empty':
@@ -389,6 +411,15 @@ const writeSummary = (type, dir, replaceDictionary) => {
     case 'desktop':
       writeDesktopSuggestCommands();
       break;
+    case 'realtime':
+      console.log(`\t\tcd ${relativeDir}\\server`);
+      console.log(summaryStrings.npm_install);
+      writeWebApiSuggestCommands();
+      console.log('');
+      console.log(`\t\tcd ${relativeDir}\\client`);
+      console.log(summaryStrings.npm_install);
+      writeWebAppSuggestCommands();
+      break;
     default:
       break;
   }
@@ -408,7 +439,12 @@ const build = async (projectType, projectDir, projectName) => {
     }, please wait...`,
   );
   const skipFileNames = [];
-  if (projectType === 'component' || projectType === 'webapp' || projectType === 'desktop') {
+  if (
+    projectType === 'component'
+    || projectType === 'webapp'
+    || projectType === 'desktop'
+    || projectType === 'realtime'
+  ) {
     skipFileNames.push('favicon.ico');
   }
 
