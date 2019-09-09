@@ -219,7 +219,7 @@ const writeCliAvailableCommands = () => {
 };
 const writeWebApiAvailableCommands = () => {
   console.log(summaryStrings.npm_run_start);
-  console.log(summaryStrings.npm_run_start);
+  console.log(summaryStrings.npm_run_start_desc);
   console.log('');
   console.log(summaryStrings.npm_run_test);
   console.log(summaryStrings.npm_run_test_desc);
@@ -234,6 +234,9 @@ const writeWebApiAvailableCommands = () => {
   console.log(summaryStrings.npm_run_docker_run_desc);
 };
 const writeWebAppAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+  console.log(summaryStrings.npm_run_start_desc);
+  console.log('');
   console.log(summaryStrings.npm_run_test);
   console.log(summaryStrings.npm_run_test_desc);
   console.log('');
@@ -247,6 +250,9 @@ const writeWebAppAvailableCommands = () => {
   console.log(summaryStrings.npm_run_docker_run_desc);
 };
 const writeWebDashboardAvailableCommands = () => {
+  console.log(summaryStrings.npm_run_start);
+  console.log(summaryStrings.npm_run_start_desc);
+  console.log('');
   console.log(summaryStrings.npm_run_test);
   console.log(summaryStrings.npm_run_test_desc);
   console.log('');
@@ -323,9 +329,6 @@ const writeWebDashboardSuggestCommands = (relativeDir) => {
   console.log(summaryStrings.npm_run_docker_run);
 };
 const writeDesktopSuggestCommands = () => {
-  console.log(summaryStrings.npm_run_start);
-};
-const writeRealTimeSuggestCommands = () => {
   console.log(summaryStrings.npm_run_start);
 };
 
@@ -414,11 +417,11 @@ const writeSummary = (type, dir, replaceDictionary) => {
     case 'realtime':
       console.log(`\t\tcd ${relativeDir}\\server`);
       console.log(summaryStrings.npm_install);
-      writeWebApiSuggestCommands();
+      console.log(summaryStrings.npm_run_start);
       console.log('');
       console.log(`\t\tcd ${relativeDir}\\client`);
       console.log(summaryStrings.npm_install);
-      writeWebAppSuggestCommands();
+      console.log(summaryStrings.npm_run_start);
       break;
     default:
       break;
