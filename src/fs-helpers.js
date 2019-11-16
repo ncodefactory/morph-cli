@@ -1,6 +1,6 @@
 import fs from 'fs';
 
-const directoryExists = (directoryName) => {
+const directoryExists = directoryName => {
   try {
     return fs.statSync(directoryName).isDirectory();
   } catch (err) {
@@ -8,7 +8,7 @@ const directoryExists = (directoryName) => {
   }
 };
 
-const directoryIsEmpty = (directoryName) => {
+const directoryIsEmpty = directoryName => {
   try {
     return !fs.readdirSync(directoryName).length;
   } catch (err) {
@@ -16,7 +16,7 @@ const directoryIsEmpty = (directoryName) => {
   }
 };
 
-const makeDirIfNotExists = (directoryName) => {
+const makeDirIfNotExists = directoryName => {
   if (!directoryExists(directoryName)) {
     fs.mkdirSync(directoryName, { recursive: true });
   }

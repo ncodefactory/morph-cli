@@ -4,7 +4,11 @@ import path from 'path';
 import fs from 'fs';
 import { makeDirIfNotExists } from './fs-helpers';
 
-const fileProcessor = lineProcessor => (sourcefileName, destinationFileName, closeHandler) => {
+const fileProcessor = lineProcessor => (
+  sourcefileName,
+  destinationFileName,
+  closeHandler,
+) => {
   if (fs.existsSync(destinationFileName)) {
     fs.unlinkSync(destinationFileName);
   }
@@ -22,7 +26,7 @@ const fileProcessor = lineProcessor => (sourcefileName, destinationFileName, clo
   const destDir = path.dirname(destinationFileName);
   makeDirIfNotExists(destDir);
 
-  rl.on('line', (line) => {
+  rl.on('line', line => {
     fs.appendFileSync(destinationFileName, `${lineProcessor(line)}\n`);
   });
   rl.on('close', () => {

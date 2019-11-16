@@ -17,7 +17,10 @@ const run = async () => {
       '-n, --dir-name [dirName]',
       'project root directory name (use current directory name if not specified)',
     )
-    .option('-f, --force [force]', 'use this option for overwrite existing files')
+    .option(
+      '-f, --force [force]',
+      'use this option for overwrite existing files',
+    )
     .action(async (projectType, options) => {
       try {
         await newHandler(projectType, options.dirName, options.force);
@@ -28,7 +31,7 @@ const run = async () => {
     .on('--help', () => {
       console.log('');
       console.log('Available project types:');
-      supportedProjectTypes.forEach((value) => {
+      supportedProjectTypes.forEach(value => {
         const formattedName = value.name + ' '.repeat(12 - value.name.length);
         console.log(`  ${formattedName} - ${value.desc}`);
       });
@@ -51,6 +54,4 @@ const run = async () => {
   }
 };
 
-export {
-  moduleName, moduleVersion, moduleDescription, run,
-};
+export { moduleName, moduleVersion, moduleDescription, run };

@@ -3,12 +3,12 @@ import os from 'os';
 
 const userName = os.userInfo().username;
 
-const validateEmail = (email) => {
+const validateEmail = email => {
   const re = /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/; // eslint-disable-line no-useless-escape
   return re.test(String(email).toLowerCase());
 };
 
-const validateConatiner = (container) => {
+const validateContainer = container => {
   const re = /^[a-zA-Z][a-zA-Z0-9._-]*[a-zA-Z0-9]$/;
   return re.test(String(container).toLowerCase());
 };
@@ -48,7 +48,7 @@ const askAuthor = () => {
   return inquirer.prompt(questions);
 };
 
-const askAppName = (name) => {
+const askAppName = name => {
   const questions = [
     {
       type: 'input',
@@ -135,14 +135,14 @@ const askRepoDetails = () => {
   return inquirer.prompt(questions);
 };
 
-const askContainerDetails = (name) => {
+const askContainerDetails = name => {
   const questions = [
     {
       type: 'input',
       name: 'containerName',
       message: 'Docker container name',
       validate(value) {
-        if (value.length && validateConatiner(value)) {
+        if (value.length && validateContainer(value)) {
           return true;
         }
 
@@ -150,7 +150,7 @@ const askContainerDetails = (name) => {
       },
     },
   ];
-  if (name.length && validateConatiner(name)) {
+  if (name.length && validateContainer(name)) {
     questions[0].default = name;
   }
 

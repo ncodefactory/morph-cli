@@ -21,43 +21,40 @@
     "test": "mocha --reporter mochawesome --reporter-options reportDir=test-results src/**/*spec.js --require @babel/register --recursive",
     "prepare": "shx rm -rf dist && cross-env NODE_ENV=production babel src --out-dir dist --ignore '**/*.spec.js' --ignore 'src/app.js' && shx mkdir -p dist/templates && shx cp assets/templates/*.tar.gz dist/templates",
     "add": "npm run prepare && npm install -g",
-    "remove": "npm remove -g"
-  },
-  "babel": {
-    "presets": [
-      [
-        "@babel/preset-env",
-        {
-          "targets": {
-            "node": "current"
-          }
-        }
-      ]
-    ]
+    "remove": "npm remove -g",
+    "upgrade": "npm install -g npm-check-updates && ncu -u && npm install"
   },
   "devDependencies": {
-    "@babel/cli": "^7.4.4",
-    "@babel/core": "^7.4.4",
-    "@babel/preset-env": "^7.4.4",
-    "@babel/register": "^7.4.4",
-    "assert": "^1.4.1",
-    "cross-env": "^5.2.0",
-    "eslint": "^5.16.0",
-    "eslint-config-airbnb-base": "^13.1.0",
-    "eslint-plugin-import": "^2.17.2",
-    "mocha": "^6.1.4",
-    "mochawesome": "^3.1.2",
+    "@babel/cli": "^7.7.0",
+    "@babel/core": "^7.7.2",
+    "@babel/plugin-proposal-class-properties": "^7.7.0",
+    "@babel/preset-env": "^7.7.1",
+    "@babel/register": "^7.7.0",
+    "assert": "^2.0.0",
+    "babel-eslint": "^10.0.3",
+    "cross-env": "^6.0.3",
+    "eslint": "^6.6.0",
+    "eslint-config-airbnb": "^18.0.1",
+    "eslint-config-prettier": "^6.5.0",
+    "eslint-plugin-import": "^2.18.2",
+    "eslint-plugin-jsx-a11y": "^6.2.3",
+    "eslint-plugin-prettier": "^3.1.1",
+    "eslint-plugin-react": "^7.16.0",
+    "mocha": "^6.2.2",
+    "mochawesome": "^4.1.0",
+    "prettier": "^1.19.1",
+    "react": "^16.12.0",
     "shx": "^0.3.2"
   },
   "dependencies": {
-    "chalk": "^2.4.2",
+    "chalk": "^3.0.0",
     "clear": "^0.1.0",
-    "commander": "^2.20.0",
-    "figlet": "^1.2.1",
-    "inquirer": "^6.3.1",
-    "moment-timezone": "^0.5.25",
+    "commander": "^4.0.1",
+    "figlet": "^1.2.4",
+    "inquirer": "^7.0.0",
+    "moment-timezone": "^0.5.27",
     "recursive-readdir": "^2.2.2",
-    "tar": "^4.4.8",
+    "tar": "^5.0.5",
     "tmp": "^0.1.0"
   }
 }

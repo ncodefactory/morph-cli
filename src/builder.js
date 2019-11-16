@@ -37,7 +37,7 @@ const endsWithAny = (text, anyStrings, nocharcase = false) => {
   return false;
 };
 
-const packagePostProcessor = (packageFileName) => {
+const packagePostProcessor = packageFileName => {
   let buildedPackage;
 
   if (!fs.existsSync(packageFileName)) {
@@ -89,16 +89,18 @@ const extractTemplate = (
           }
 
           const processor = fileProcessor(lineProcessor(replaceDictionary));
-          files.forEach((file) => {
+          files.forEach(file => {
             const destFile = file.replace(tmpDir, destDir);
             if (endsWithAny(file, skipFileNames, true)) {
               makeDirIfNotExists(path.dirname(destFile));
               fs.copyFileSync(file, destFile);
             } else {
-              processor(file, destFile, (fileName) => {
+              processor(file, destFile, fileName => {
                 postProcessors
                   .filter(postProc => postProc.fileName === fileName)
-                  .forEach(postProc => postProc.postProcessor(postProc.fileName));
+                  .forEach(postProc =>
+                    postProc.postProcessor(postProc.fileName),
+                  );
               });
             }
           });
@@ -111,7 +113,8 @@ const extractTemplate = (
   });
 };
 
-const normalizeName = name => (name.length && name[0] === '@' ? name.slice(1) : name);
+const normalizeName = name =>
+  name.length && name[0] === '@' ? name.slice(1) : name;
 
 const buildReplaceDictionary = async (type, projectDir, name) => {
   const appDetails = await askAppName(name || path.basename(projectDir));
@@ -121,7 +124,10 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
       key: '$DIRECTORY_PLATFORM_STRING$',
       value: replaceAll(projectDir, path.sep, '$PATH_SEPARATOR$'),
     },
-    { key: '$PATH_SEPARATOR$', value: isWin() ? `${path.sep}${path.sep}` : path.sep },
+    {
+      key: '$PATH_SEPARATOR$',
+      value: isWin() ? `${path.sep}${path.sep}` : path.sep,
+    },
     { key: '$CURRENT_YEAR$', value: new Date().getFullYear() },
     { key: '$CURRENT_TIMEZONE$', value: moment.tz.guess() },
     { key: '$NAME$', value: appDetails.name },
@@ -132,7 +138,10 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
     const containerDetails = await askContainerDetails(
       result.find(item => item.key === '$NORMALIZED_NAME$').value,
     );
-    result.push({ key: '$CONTAINER_NAME$', value: containerDetails.containerName });
+    result.push({
+      key: '$CONTAINER_NAME$',
+      value: containerDetails.containerName,
+    });
   }
 
   if (type === 'cli') {
@@ -142,7 +151,10 @@ const buildReplaceDictionary = async (type, projectDir, name) => {
 
   if (type === 'component') {
     const componentInfo = await askComponentDetails();
-    result.push({ key: '$COMPONENT_NAME$', value: componentInfo.componentName });
+    result.push({
+      key: '$COMPONENT_NAME$',
+      value: componentInfo.componentName,
+    });
   }
 
   if (type !== 'empty') {
@@ -170,7 +182,8 @@ const summaryStrings = {
   npm_run_compile_desc:
     '\t\t\tCreates transpiled versions of source files with source maps (required for debugging)',
   npm_run_docker_build: '\t\tnpm run docker-build',
-  npm_run_docker_build_desc: '\t\t\tBuilds docker image for this app (docker required)',
+  npm_run_docker_build_desc:
+    '\t\t\tBuilds docker image for this app (docker required)',
   npm_run_docker_run: '\t\tnpm run docker-run',
   npm_run_docker_run_desc:
     '\t\t\tRun docker container from image builded with npm run docker-build command (docker required)',
@@ -267,7 +280,9 @@ const writeWebDashboardAvailableCommands = () => {
 };
 const writeDesktopAvailableCommands = () => {
   console.log(summaryStrings.npm_run_start);
-  console.log('\t\t\tStarts the application in development mode (electron with devtools)');
+  console.log(
+    '\t\t\tStarts the application in development mode (electron with devtools)',
+  );
   console.log('');
   console.log(summaryStrings.npm_run_test);
   console.log(summaryStrings.npm_run_test_desc);
@@ -293,12 +308,12 @@ const writeModuleSuggestCommands = () => {
 const writeComponentSuggestCommands = () => {
   console.log(summaryStrings.npm_run_start);
 };
-const writeCliSuggestCommands = (binCommandText) => {
+const writeCliSuggestCommands = binCommandText => {
   console.log('\t\tnpm run add');
   console.log(`\t\t${binCommandText}`);
   console.log('\t\tnpm run remove');
 };
-const writeWebApiSuggestCommands = (relativeDir) => {
+const writeWebApiSuggestCommands = relativeDir => {
   console.log(summaryStrings.npm_run_start);
   console.log('');
   console.log(summaryStrings.or_if_you_want_docker);
@@ -308,7 +323,7 @@ const writeWebApiSuggestCommands = (relativeDir) => {
   console.log(summaryStrings.npm_run_docker_build);
   console.log(summaryStrings.npm_run_docker_run);
 };
-const writeWebAppSuggestCommands = (relativeDir) => {
+const writeWebAppSuggestCommands = relativeDir => {
   console.log(summaryStrings.npm_run_start);
   console.log('');
   console.log(summaryStrings.or_if_you_want_docker);
@@ -318,7 +333,7 @@ const writeWebAppSuggestCommands = (relativeDir) => {
   console.log(summaryStrings.npm_run_docker_build);
   console.log(summaryStrings.npm_run_docker_run);
 };
-const writeWebDashboardSuggestCommands = (relativeDir) => {
+const writeWebDashboardSuggestCommands = relativeDir => {
   console.log(summaryStrings.npm_run_start);
   console.log('');
   console.log(summaryStrings.or_if_you_want_docker);
@@ -336,7 +351,9 @@ const writeSummary = (type, dir, replaceDictionary) => {
   const relativeDir = path.relative(process.cwd(), dir);
   console.log('');
   if (type === 'realtime') {
-    console.log(`\tSuccess! Created server application at ${relativeDir}/server`);
+    console.log(
+      `\tSuccess! Created server application at ${relativeDir}/server`,
+    );
     console.log(`\tand client application at ${relativeDir}/client`);
     console.log('\tInside these directories, you can run several commands:');
   } else {
@@ -400,7 +417,9 @@ const writeSummary = (type, dir, replaceDictionary) => {
       writeComponentSuggestCommands();
       break;
     case 'cli':
-      writeCliSuggestCommands(replaceDictionary.find(item => item.key === '$BIN$').value);
+      writeCliSuggestCommands(
+        replaceDictionary.find(item => item.key === '$BIN$').value,
+      );
       break;
     case 'webapi':
       writeWebApiSuggestCommands(relativeDir);
@@ -433,8 +452,16 @@ const writeSummary = (type, dir, replaceDictionary) => {
 };
 
 const build = async (projectType, projectDir, projectName) => {
-  const replaceDictionary = await buildReplaceDictionary(projectType, projectDir, projectName);
-  const templateFileName = path.join(__dirname, 'templates', `${projectType}.tar.gz`);
+  const replaceDictionary = await buildReplaceDictionary(
+    projectType,
+    projectDir,
+    projectName,
+  );
+  const templateFileName = path.join(
+    __dirname,
+    'templates',
+    `${projectType}.tar.gz`,
+  );
   console.log();
   console.log(
     `building a project ${
@@ -443,10 +470,10 @@ const build = async (projectType, projectDir, projectName) => {
   );
   const skipFileNames = [];
   if (
-    projectType === 'component'
-    || projectType === 'webapp'
-    || projectType === 'desktop'
-    || projectType === 'realtime'
+    projectType === 'component' ||
+    projectType === 'webapp' ||
+    projectType === 'desktop' ||
+    projectType === 'realtime'
   ) {
     skipFileNames.push('favicon.ico');
   }
@@ -455,9 +482,18 @@ const build = async (projectType, projectDir, projectName) => {
     skipFileNames.push('.png', '.ico', '.icns');
   }
 
-  extractTemplate(templateFileName, projectDir, replaceDictionary, skipFileNames, [
-    { fileName: path.join(projectDir, 'package.json'), postProcessor: packagePostProcessor },
-  ]);
+  extractTemplate(
+    templateFileName,
+    projectDir,
+    replaceDictionary,
+    skipFileNames,
+    [
+      {
+        fileName: path.join(projectDir, 'package.json'),
+        postProcessor: packagePostProcessor,
+      },
+    ],
+  );
   writeSummary(projectType, projectDir, replaceDictionary);
 };
 
